@@ -21,7 +21,7 @@ This code is currently in alpha stage. I'm writing unittests and will likely fin
 - Get SRAM Settings (0x61) - ok, except GPIO directions/values through SRAM (duplicate with 0x51)
 - Reset Chip (0x70) - ok
 
-Every feature marked *ok* is implemented but not necessarily thoroughly tested.
+Every feature marked *ok* is implemented but not thoroughly tested at this point.
 
 # Requirements
 - [hidapi](https://pypi.org/project/hidapi)
