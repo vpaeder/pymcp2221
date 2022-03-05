@@ -291,48 +291,6 @@ class MCP2221():
         lst = list("{:08b}".format(byte))[::-1]
         return [True if lst[n]=='1' else False for n in range(length)]
 
-    ##################
-    # I2C parameters #
-    ##################
-    def cancel_i2c_transfer(self) -> I2CCancelTransferResponse:
-        """Cancel pending I2C transfer.
-
-        Returns:
-            I2CCancelTransferResponse: response code returned by device.
-        """
-        data = self._write(0x10, 0x00, 0x10)
-        return I2CCancelTransferResponse(data[2])
-    
-    def read_i2c_speed(self) -> I2CSpeed:
-        """Read configured I2C speed.
-
-        Returns:
-            I2CSpeed: enum code describing current I2C speed.
-        """
-        return I2CSpeed(self._write(0x10)[14])
-
-    def write_i2c_speed(self, speed: I2CSpeed) -> I2CSetSpeedResponse:
-        """Write I2C speed to flash memory.
-
-        Parameters:
-            speed (I2CSpeed): enum code describing I2C speed
-        
-        Returns:
-            I2CSetSpeedResponse: response code returned by device.
-        """
-        data = self._write(0x10, 0x00, 0x00, 0x20, speed)
-        return I2CSetSpeedResponse(data[3])
-    
-    i2c_speed = property(read_i2c_speed, write_i2c_speed)
-
-    def i2c_has_pending_value(self) -> int:
-        """Tells if I2C bus has pending data to be read.
-
-        Returns:
-            int: 0 for no, 1 for yes and 2 for irrelevant.
-        """
-        return self._write(0x10)[25]
-
     ######################################
     # Read/write flash and SRAM commands #
     ######################################
@@ -462,12 +420,13 @@ class MCP2221():
         Returns:
             method: the appropriate function to read from requested memory.
         """
+        if mem == None: mem = self._mem_target
         if mem == MemoryType.SRAM:
             return self._read_sram_byte
         elif mem == MemoryType.Flash:
             return self._read_flash_byte
 
-    def get_default_memory(self) -> MemoryType:
+    def get_default_memory_target(self) -> MemoryType:
         """Gets default memory target.
 
         Returns:
@@ -475,7 +434,7 @@ class MCP2221():
         """
         return self._mem_target
 
-    def set_default_memory(self, mem:MemoryType) -> None:
+    def set_default_memory_target(self, mem:MemoryType) -> None:
         """Sets default memory target.
 
         Parameters:
@@ -483,7 +442,7 @@ class MCP2221():
         """
         self._mem_target = mem
     
-    default_memory_target = property(get_default_memory, set_default_memory)
+    default_memory_target = property(get_default_memory_target, set_default_memory_target)
 
     #################
     # Chip settings #
@@ -628,7 +587,7 @@ class MCP2221():
     
     security_option = property(read_security_option, write_security_option)
 
-    def read_clock_output_frequency(self, mem:MemoryType = MemoryType.SRAM) -> ClockOutputFrequency:
+    def read_clock_output_frequency(self, mem:MemoryType = None) -> ClockOutputFrequency:
         """Reads clock output frequency. This is the frequency of clock output
         signal if directed to GPIO pin 1.
 
@@ -642,7 +601,7 @@ class MCP2221():
         ret = fct(FlashDataSubcode.ChipSettings, 1, [0, 1, 2])
         return ClockOutputFrequency(self.__bits_to_byte(ret))
 
-    def write_clock_output_frequency(self, value:ClockOutputFrequency, mem:MemoryType = MemoryType.SRAM) -> None:
+    def write_clock_output_frequency(self, value:ClockOutputFrequency, mem:MemoryType = None) -> None:
         """Writes clock output frequency. This is the frequency of clock output
         signal if directed to GPIO pin 1. It doesn't change internal clock frequency.
 
@@ -650,6 +609,7 @@ class MCP2221():
             value(ClockOutputFrequency): enum code for clock output frequency
             mem(MemoryType): memory to write to (default SRAM)
         """
+        if mem == None: mem = self._mem_target
         if mem == MemoryType.SRAM:
             init = self.__and(self._read_sram(SramDataSubcode.ChipSettings)[1], 0b00011000)
             self._write_sram(SramDataSubcode.ChipSettings, 0, value + 0x80 + init)
@@ -658,7 +618,7 @@ class MCP2221():
 
     clock_output_frequency = property(read_clock_output_frequency, write_clock_output_frequency)
 
-    def read_clock_output_duty_cycle(self, mem:MemoryType = MemoryType.SRAM) -> ClockDutyCycle:
+    def read_clock_output_duty_cycle(self, mem:MemoryType = None) -> ClockDutyCycle:
         """Reads clock output duty cycle. This is the duty cycle of clock output
         signal if directed to GPIO pin 1.
 
@@ -672,7 +632,7 @@ class MCP2221():
         ret = fct(FlashDataSubcode.ChipSettings, 1, [3, 4])
         return ClockDutyCycle(self.__bits_to_byte(ret))
 
-    def write_clock_output_duty_cycle(self, value:ClockDutyCycle, mem:MemoryType = MemoryType.SRAM) -> None:
+    def write_clock_output_duty_cycle(self, value:ClockDutyCycle, mem:MemoryType = None) -> None:
         """Writes clock output duty cycle. This is the duty cycle of clock output
         signal if directed to GPIO pin 1.
 
@@ -680,6 +640,7 @@ class MCP2221():
             value(ClockDutyCycle): enum code for clock duty cycle
             mem(MemoryType): memory to write to (default SRAM)
         """
+        if mem == None: mem = self._mem_target
         if mem == MemoryType.SRAM:
             init = self.__and(self._read_sram(SramDataSubcode.ChipSettings)[1], 0b00000111)
             self._write_sram(SramDataSubcode.ChipSettings, 0, value + 0x80 + init)
@@ -911,7 +872,7 @@ class MCP2221():
     #############
     # Interrupt #
     #############
-    def read_interrupt_on_falling_edge(self, mem:MemoryType = MemoryType.SRAM) -> bool:
+    def read_interrupt_on_falling_edge(self, mem:MemoryType = None) -> bool:
         """Reads interrupt on falling edge flag. This tells the state of interrupt
         detection on falling edge.
 
@@ -924,7 +885,7 @@ class MCP2221():
         fct = self.__get_mem_read_function(mem)
         return fct(FlashDataSubcode.ChipSettings, 3, [6])[0]
     
-    def write_interrupt_on_falling_edge(self, value:bool, mem:MemoryType = MemoryType.SRAM) -> None:
+    def write_interrupt_on_falling_edge(self, value:bool, mem:MemoryType = None) -> None:
         """Writes interrupt on falling edge flag. This sets the state of interrupt
         detection on falling edge.
 
@@ -932,6 +893,7 @@ class MCP2221():
             value(bool): value of interrupt on falling edge flag (True = active)
             mem(MemoryType): enum code for memory type (flash or SRAM)
         """
+        if mem == None: mem = self._mem_target
         if mem == MemoryType.SRAM:
             self._write_sram(SramDataSubcode.ChipSettings, 7, 0b10011000 if value else 0b10010000)
         elif mem == MemoryType.Flash:
@@ -939,7 +901,7 @@ class MCP2221():
     
     interrupt_on_falling_edge = property(read_interrupt_on_falling_edge, write_interrupt_on_falling_edge)
 
-    def read_interrupt_on_rising_edge(self, mem:MemoryType = MemoryType.SRAM) -> bool:
+    def read_interrupt_on_rising_edge(self, mem:MemoryType = None) -> bool:
         """Reads interrupt on rising edge flag. This tells the state of interrupt
         detection on rising edge.
 
@@ -952,7 +914,7 @@ class MCP2221():
         fct = self.__get_mem_read_function(mem)
         return fct(FlashDataSubcode.ChipSettings, 3, [5])[0]
     
-    def write_interrupt_on_rising_edge(self, value:bool, mem:MemoryType = MemoryType.SRAM) -> None:
+    def write_interrupt_on_rising_edge(self, value:bool, mem:MemoryType = None) -> None:
         """Writes interrupt on rising edge flag. This sets the state of interrupt
         detection on rising edge.
 
@@ -960,6 +922,7 @@ class MCP2221():
             value(bool): value of interrupt on rising edge flag (True = active)
             mem(MemoryType): enum code for memory type (flash or SRAM)
         """
+        if mem == None: mem = self._mem_target
         if mem == MemoryType.SRAM:
             self._write_sram(SramDataSubcode.ChipSettings, 7, 0b10000110 if value else 0b10000100)
         elif mem == MemoryType.Flash:
@@ -982,9 +945,48 @@ class MCP2221():
         """
         self._write_sram(SramDataSubcode.ChipSettings, 7, 0b10000001)
 
-    #####################
-    # I2C data transfer #
-    #####################
+    #######################################
+    # I2C configuration and data transfer #
+    #######################################
+    def cancel_i2c_transfer(self) -> I2CCancelTransferResponse:
+        """Cancel pending I2C transfer.
+
+        Returns:
+            I2CCancelTransferResponse: response code returned by device.
+        """
+        data = self._write(0x10, 0x00, 0x10)
+        return I2CCancelTransferResponse(data[2])
+    
+    def read_i2c_speed(self) -> I2CSpeed:
+        """Read configured I2C speed.
+
+        Returns:
+            I2CSpeed: enum code describing current I2C speed.
+        """
+        return I2CSpeed(self._write(0x10)[14])
+
+    def write_i2c_speed(self, speed: I2CSpeed) -> I2CSetSpeedResponse:
+        """Write I2C speed to flash memory.
+
+        Parameters:
+            speed (I2CSpeed): enum code describing I2C speed
+        
+        Returns:
+            I2CSetSpeedResponse: response code returned by device.
+        """
+        data = self._write(0x10, 0x00, 0x00, 0x20, speed)
+        return I2CSetSpeedResponse(data[3])
+    
+    i2c_speed = property(read_i2c_speed, write_i2c_speed)
+
+    def i2c_has_pending_value(self) -> int:
+        """Tells if I2C bus has pending data to be read.
+
+        Returns:
+            int: 0 for no, 1 for yes and 2 for irrelevant.
+        """
+        return self._write(0x10)[25]
+
     def _check_i2c_parameters(self, address:bytes, length:int):
         """Internal command. Checks if given I2C parameters are valid.
 
@@ -1122,7 +1124,7 @@ class MCP2221():
     gpio2_powerup_direction = property(lambda s: s.gpio_read_powerup_direction(2), lambda s, v: s.gpio_write_powerup_direction(2, v))
     gpio3_powerup_direction = property(lambda s: s.gpio_read_powerup_direction(3), lambda s, v: s.gpio_write_powerup_direction(3, v))
 
-    def _gpio_read_function(self, gpio_num:int, mem:MemoryType = MemoryType.SRAM) -> list:
+    def _gpio_read_function(self, gpio_num:int, mem:MemoryType = None) -> list:
         """Internal command. Reads GPIO pin function.
 
         Parameters:
@@ -1133,12 +1135,13 @@ class MCP2221():
             list[bool]: bit list representing GPIO pin direction value.
         """
         self.__check_gpio_pin_index(gpio_num)
+        if mem == None: mem = self._mem_target
         if mem == MemoryType.SRAM:
             return self._read_sram_byte(SramDataSubcode.GPSettings, gpio_num, [0, 1, 2])
         elif mem == MemoryType.Flash:
             return self._read_flash_byte(FlashDataSubcode.GPSettings, gpio_num, [0, 1, 2])
     
-    def _gpio_write_function(self, gpio_num:int, value:int, mem:MemoryType = MemoryType.SRAM) -> None:
+    def _gpio_write_function(self, gpio_num:int, value:int, mem:MemoryType = None) -> None:
         """Internal command. Writes GPIO pin function.
 
         Parameters:
@@ -1147,12 +1150,13 @@ class MCP2221():
             mem(MemoryType): enum code for memory type (flash or SRAM)
         """
         self.__check_gpio_pin_index(gpio_num)
+        if mem == None: mem = self._mem_target
         if mem == MemoryType.SRAM:
             self._write_sram(SramDataSubcode.GPSettings, 8 + gpio_num, value)
         elif mem == MemoryType.Flash:
             self._write_flash_byte(FlashDataSubcode.GPSettings, gpio_num, [0, 1, 2], self.__byte_to_bits(value, 3))
 
-    def gpio0_read_function(self, mem:MemoryType = MemoryType.SRAM) -> GPIO0Function:
+    def gpio0_read_function(self, mem:MemoryType = None) -> GPIO0Function:
         """Reads GPIO pin 0 function.
 
         Parameters:
@@ -1164,7 +1168,7 @@ class MCP2221():
         ret = self._gpio_read_function(0, mem)
         return GPIO0Function(self.__bits_to_byte(ret))
     
-    def gpio0_write_function(self, value: GPIO0Function, mem:MemoryType = MemoryType.SRAM) -> None:
+    def gpio0_write_function(self, value: GPIO0Function, mem:MemoryType = None) -> None:
         """Writes GPIO pin 0 function.
 
         Parameters:
@@ -1175,7 +1179,7 @@ class MCP2221():
     
     gpio0_function = property(gpio0_read_function, gpio0_write_function)
 
-    def gpio1_read_function(self, mem:MemoryType = MemoryType.SRAM) -> GPIO1Function:
+    def gpio1_read_function(self, mem:MemoryType = None) -> GPIO1Function:
         """Reads GPIO pin 1 function.
 
         Parameters:
@@ -1187,7 +1191,7 @@ class MCP2221():
         ret = self._gpio_read_function(1, mem)
         return GPIO1Function(self.__bits_to_byte(ret))
     
-    def gpio1_write_function(self, value: GPIO1Function, mem:MemoryType = MemoryType.SRAM) -> None:
+    def gpio1_write_function(self, value: GPIO1Function, mem:MemoryType = None) -> None:
         """Writes GPIO pin 1 function.
 
         Parameters:
@@ -1198,7 +1202,7 @@ class MCP2221():
 
     gpio1_function = property(gpio1_read_function, gpio1_write_function)
 
-    def gpio2_read_function(self, mem:MemoryType = MemoryType.SRAM) -> GPIO2Function:
+    def gpio2_read_function(self, mem:MemoryType = None) -> GPIO2Function:
         """Reads GPIO pin 2 function.
 
         Parameters:
@@ -1210,7 +1214,7 @@ class MCP2221():
         ret = self._gpio_read_function(2, mem)
         return GPIO2Function(self.__bits_to_byte(ret))
     
-    def gpio2_write_function(self, value: GPIO2Function, mem:MemoryType = MemoryType.SRAM) -> None:
+    def gpio2_write_function(self, value: GPIO2Function, mem:MemoryType = None) -> None:
         """Writes GPIO pin 2 function.
 
         Parameters:
@@ -1221,7 +1225,7 @@ class MCP2221():
 
     gpio2_function = property(gpio2_read_function, gpio2_write_function)
 
-    def gpio3_read_function(self, mem:MemoryType = MemoryType.SRAM) -> GPIO3Function:
+    def gpio3_read_function(self, mem:MemoryType = None) -> GPIO3Function:
         """Reads GPIO pin 3 function.
 
         Parameters:
@@ -1233,7 +1237,7 @@ class MCP2221():
         ret = self._gpio_read_function(3, mem)
         return GPIO3Function(self.__bits_to_byte(ret))
     
-    def gpio3_write_function(self, value: GPIO3Function, mem:MemoryType = MemoryType.SRAM) -> None:
+    def gpio3_write_function(self, value: GPIO3Function, mem:MemoryType = None) -> None:
         """Writes GPIO pin 3 function.
 
         Parameters:
@@ -1314,7 +1318,7 @@ class MCP2221():
     ######################
     # ADC and DAC access #
     ######################
-    def read_adc_voltage_reference(self, mem:MemoryType = MemoryType.SRAM) -> VoltageReferenceValue:
+    def read_adc_voltage_reference(self, mem:MemoryType = None) -> VoltageReferenceValue:
         """Reads ADC voltage reference settings.
 
         Parameters:
@@ -1327,13 +1331,14 @@ class MCP2221():
         ret = fct(FlashDataSubcode.ChipSettings, 3, [3, 4])
         return VoltageReferenceValue(self.__bits_to_byte(ret))
     
-    def write_adc_voltage_reference(self, value:VoltageReferenceValue, mem:MemoryType = MemoryType.SRAM) -> None:
+    def write_adc_voltage_reference(self, value:VoltageReferenceValue, mem:MemoryType = None) -> None:
         """Writes ADC voltage reference settings.
 
         Parameters:
             mem(MemoryType): enum code for memory type (flash or SRAM)
             VoltageReferenceValue: enum code for voltage reference settings
         """
+        if mem == None: mem = self._mem_target
         if mem == MemoryType.SRAM:
             init = self.__and(self._read_sram(SramDataSubcode.ChipSettings)[3], 0b00000001)
             self._write_sram(SramDataSubcode.ChipSettings, 3, value + 0x80 + init)
@@ -1342,7 +1347,7 @@ class MCP2221():
 
     adc_voltage_reference = property(read_adc_voltage_reference, write_adc_voltage_reference)
 
-    def read_adc_reference_bit(self, mem:MemoryType = MemoryType.SRAM) -> VoltageReferenceSource:
+    def read_adc_reference_bit(self, mem:MemoryType = None) -> VoltageReferenceSource:
         """Reads ADC reference flag.
 
         Parameters:
@@ -1354,13 +1359,14 @@ class MCP2221():
         fct = self.__get_mem_read_function(mem)
         return VoltageReferenceSource(fct(FlashDataSubcode.ChipSettings, 3, [2])[0])
 
-    def write_adc_reference_bit(self, value:VoltageReferenceSource, mem:MemoryType = MemoryType.SRAM) -> None:
+    def write_adc_reference_bit(self, value:VoltageReferenceSource, mem:MemoryType = None) -> None:
         """Writes ADC reference flag.
 
         Parameters:
             value(VoltageReferenceSource): enum code for voltage reference source
             mem(MemoryType): enum code for memory type (flash or SRAM)
         """
+        if mem == None: mem = self._mem_target
         if mem == MemoryType.SRAM:
             init = self.__and(self._read_sram(SramDataSubcode.ChipSettings)[3], 0b00000110)
             self._write_sram(SramDataSubcode.ChipSettings, 3, value + 0x80 + init)
@@ -1369,7 +1375,7 @@ class MCP2221():
     
     adc_reference_bit = property(read_adc_reference_bit, write_adc_reference_bit)
 
-    def read_dac_voltage_reference(self, mem:MemoryType = MemoryType.SRAM) -> VoltageReferenceValue:
+    def read_dac_voltage_reference(self, mem:MemoryType = None) -> VoltageReferenceValue:
         """Reads DAC voltage reference settings.
 
         Parameters:
@@ -1382,13 +1388,14 @@ class MCP2221():
         ret = fct(FlashDataSubcode.ChipSettings, 2, [6, 7])
         return VoltageReferenceValue(self.__bits_to_byte(ret))
     
-    def write_dac_voltage_reference(self, value:VoltageReferenceValue, mem:MemoryType = MemoryType.SRAM) -> None:
+    def write_dac_voltage_reference(self, value:VoltageReferenceValue, mem:MemoryType = None) -> None:
         """Writes DAC voltage reference settings.
 
         Parameters:
             mem(MemoryType): enum code for memory type (flash or SRAM)
             VoltageReferenceValue: enum code for voltage reference settings
         """
+        if mem == None: mem = self._mem_target
         if mem == MemoryType.SRAM:
             init = self.__and(self._read_sram(SramDataSubcode.ChipSettings)[2], 0b00000001)
             self._write_sram(SramDataSubcode.ChipSettings, 1, value + 0x80 + init)
@@ -1397,7 +1404,7 @@ class MCP2221():
 
     dac_voltage_reference = property(read_dac_voltage_reference, write_dac_voltage_reference)
 
-    def read_dac_reference_bit(self, mem:MemoryType = MemoryType.SRAM) -> VoltageReferenceSource:
+    def read_dac_reference_bit(self, mem:MemoryType = None) -> VoltageReferenceSource:
         """Reads DAC reference flag.
 
         Parameters:
@@ -1409,13 +1416,14 @@ class MCP2221():
         fct = self.__get_mem_read_function(mem)
         return VoltageReferenceSource(fct(FlashDataSubcode.ChipSettings, 2, [5])[0])
 
-    def write_dac_reference_bit(self, value:VoltageReferenceSource, mem:MemoryType = MemoryType.SRAM) -> None:
+    def write_dac_reference_bit(self, value:VoltageReferenceSource, mem:MemoryType = None) -> None:
         """Writes DAC reference flag.
 
         Parameters:
             value(VoltageReferenceSource): enum code for voltage reference source
             mem(MemoryType): enum code for memory type (flash or SRAM)
         """
+        if mem == None: mem = self._mem_target
         if mem == MemoryType.SRAM:
             init = self.__and(self._read_sram(SramDataSubcode.ChipSettings)[2], 0b00000110)
             self._write_sram(SramDataSubcode.ChipSettings, 1, value + 0x80 + init)
