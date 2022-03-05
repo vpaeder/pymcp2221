@@ -1282,7 +1282,7 @@ class MCP2221():
     gpio2_direction = property(lambda s: s.gpio_read_direction(2), lambda s, v: s.gpio_write_direction(2, v))
     gpio3_direction = property(lambda s: s.gpio_read_direction(3), lambda s, v: s.gpio_write_direction(3, v))
     
-    def gpio_get_value(self, pin:int) -> bool:
+    def gpio_read_value(self, pin:int) -> bool:
         """Gets GPIO pin value.
 
         Parameters:
@@ -1297,7 +1297,7 @@ class MCP2221():
             raise InvalidReturnValueWarning("Pin not set for GPIO operation")
         return bool(value)
 
-    def gpio_set_value(self, pin:int, value:bool) -> None:
+    def gpio_write_value(self, pin:int, value:bool) -> None:
         """Sets GPIO pin direction.
 
         Parameters:
@@ -1310,10 +1310,10 @@ class MCP2221():
             cmd += bytearray([0x01 if pin == n else 0x00, value if pin == n else 0x00, 0x00, 0x00])
         self._write(*cmd)
 
-    gpio0_value = property(lambda s: s.gpio_get_value(0), lambda s, v: s.gpio_set_value(0, v))
-    gpio1_value = property(lambda s: s.gpio_get_value(1), lambda s, v: s.gpio_set_value(1, v))
-    gpio2_value = property(lambda s: s.gpio_get_value(2), lambda s, v: s.gpio_set_value(2, v))
-    gpio3_value = property(lambda s: s.gpio_get_value(3), lambda s, v: s.gpio_set_value(3, v))
+    gpio0_value = property(lambda s: s.gpio_read_value(0), lambda s, v: s.gpio_write_value(0, v))
+    gpio1_value = property(lambda s: s.gpio_read_value(1), lambda s, v: s.gpio_write_value(1, v))
+    gpio2_value = property(lambda s: s.gpio_read_value(2), lambda s, v: s.gpio_write_value(2, v))
+    gpio3_value = property(lambda s: s.gpio_read_value(3), lambda s, v: s.gpio_write_value(3, v))
 
     ######################
     # ADC and DAC access #
