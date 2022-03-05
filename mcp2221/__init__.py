@@ -1399,8 +1399,8 @@ class MCP2221():
         """
         if mem == None: mem = self._mem_target
         if mem == MemoryType.SRAM:
-            init = self.__and(self._read_sram(SramDataSubcode.ChipSettings)[2], 0b00000001)
-            self._write_sram(SramDataSubcode.ChipSettings, 1, value + 0x80 + init)
+            init = self.__and(self._read_sram(SramDataSubcode.ChipSettings)[2]>>5, 0b00000001)
+            self._write_sram(SramDataSubcode.ChipSettings, 1, (value<<1) + 0x80 + init)
         elif mem == MemoryType.Flash:
             self._write_flash_byte(FlashDataSubcode.ChipSettings, 2, [6, 7], self.__byte_to_bits(value, 2))
 
@@ -1427,7 +1427,7 @@ class MCP2221():
         """
         if mem == None: mem = self._mem_target
         if mem == MemoryType.SRAM:
-            init = self.__and(self._read_sram(SramDataSubcode.ChipSettings)[2], 0b00000110)
+            init = self.__and(self._read_sram(SramDataSubcode.ChipSettings)[2]>>5, 0b00000110)
             self._write_sram(SramDataSubcode.ChipSettings, 1, value + 0x80 + init)
         elif mem == MemoryType.Flash:
             self._write_flash_byte(FlashDataSubcode.ChipSettings, 2, [5], [value])
