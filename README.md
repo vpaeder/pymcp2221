@@ -1,5 +1,6 @@
 # pymcp2221
-A python driver for the Microchip MCP2221/MCP2221A USB 2.0 to I2C/UART protocol converters
+This is a python driver for the Microchip MCP2221/MCP2221A USB 2.0 to I2C/UART protocol converters
+([manufacturer's page](https://www.microchip.com/en-us/product/MCP2221A)).
 
 First and foremost, there is already a python package for the same chip available [here](https://github.com/nonNoise/PyMCP2221A). If you use it and are satisfied with it, you probably won't find improvements in my package. If you're missing some features however, my code is meant to expose every chip feature described in the datasheet in a systematic manner, for python 3.3+.
 
