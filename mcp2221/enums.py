@@ -3,8 +3,7 @@
 __all__ = ["I2CSpeed", "ClockDutyCycle", "VoltageReferenceValue", "GPIO0Function", "GPIO1Function",
            "GPIO2Function", "GPIO3Function", "I2CCancelTransferResponse", "I2CSetSpeedResponse",
            "FlashDataSubcode", "SramDataSubcode", "I2CMode", "GPIODirection",
-           "SecurityOption", "MemoryType", "ClockOutputFrequency", "VoltageReferenceSource",
-           "USBConfigurationDescriptor"]
+           "SecurityOption", "MemoryType", "ClockOutputFrequency", "VoltageReferenceSource"]
 
 import enum
 
