@@ -2,7 +2,8 @@
 '''This shows how to configure and use the ADCs.
 '''
 from mcp2221 import MCP2221, find_devices
-from mcp2221.enums import VoltageReferenceSource, VoltageReferenceValue
+from mcp2221.enums import VoltageReferenceSource,\
+    VoltageReferenceValue, GPIO1Function, GPIO2Function, GPIO3Function
 
 # opens 1st device found
 mcp = MCP2221(find_devices()[0])
@@ -24,6 +25,10 @@ print(mcp.read_adc_voltage_reference())
 # writes adc voltage reference source and value with class methods
 mcp.write_adc_reference_source(VoltageReferenceSource.Internal)
 mcp.write_adc_voltage_reference(VoltageReferenceValue.Voltage1_024V)
+# ADCs can read signal from GPIO pin 1, 2 or 3 with:
+#     mcp.gpio1_function = GPIO1Function.ADC1
+#     mcp.gpio2_function = GPIO2Function.ADC2
+#     mcp.gpio3_function = GPIO3Function.ADC3
 # reads ADC 0 value; there are 3 ADCs (indexed as 0, 1 and 2)
 print(mcp.adc0_value)
 # ADC values are read-only properties
