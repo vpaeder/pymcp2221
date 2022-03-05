@@ -82,9 +82,9 @@ class MCP2221():
         gpio2_value(bool): GPIO pin 2 value
         gpio3_value(bool): GPIO pin 3 value
         adc_voltage_reference(VoltageReferenceValue): ADC voltage reference settings
-        adc_reference_bit(VoltageReferenceSource): ADC voltage reference source
+        adc_reference_source(VoltageReferenceSource): ADC voltage reference source
         dac_voltage_reference(VoltageReferenceValue): DAC voltage reference settings
-        dac_reference_bit(VoltageReferenceSource): DAC voltage reference source
+        dac_reference_source(VoltageReferenceSource): DAC voltage reference source
         adc0_value(int): ADC 0 value (read-only)
         adc1_value(int): ADC 1 value (read-only)
         adc2_value(int): ADC 2 value (read-only)
@@ -1340,14 +1340,16 @@ class MCP2221():
         """
         if mem == None: mem = self._mem_target
         if mem == MemoryType.SRAM:
-            init = self.__and(self._read_sram(SramDataSubcode.ChipSettings)[3], 0b00000001)
-            self._write_sram(SramDataSubcode.ChipSettings, 3, value + 0x80 + init)
+            # we keep bit 0 as it is reference flag and we don't want to modify it here
+            init = self.__and(self._read_sram(SramDataSubcode.ChipSettings)[3]>>2, 0b00000001)
+            # value must be on bits 1 and 2, bit 7 must be set to 1 to enable modification
+            self._write_sram(SramDataSubcode.ChipSettings, 3, (value<<1) + 0x80 + init)
         elif mem == MemoryType.Flash:
             self._write_flash_byte(FlashDataSubcode.ChipSettings, 3, [3, 4], self.__byte_to_bits(value, 2))
 
     adc_voltage_reference = property(read_adc_voltage_reference, write_adc_voltage_reference)
 
-    def read_adc_reference_bit(self, mem:MemoryType = None) -> VoltageReferenceSource:
+    def read_adc_reference_source(self, mem:MemoryType = None) -> VoltageReferenceSource:
         """Reads ADC reference flag.
 
         Parameters:
@@ -1359,7 +1361,7 @@ class MCP2221():
         fct = self.__get_mem_read_function(mem)
         return VoltageReferenceSource(fct(FlashDataSubcode.ChipSettings, 3, [2])[0])
 
-    def write_adc_reference_bit(self, value:VoltageReferenceSource, mem:MemoryType = None) -> None:
+    def write_adc_reference_source(self, value:VoltageReferenceSource, mem:MemoryType = None) -> None:
         """Writes ADC reference flag.
 
         Parameters:
@@ -1368,12 +1370,12 @@ class MCP2221():
         """
         if mem == None: mem = self._mem_target
         if mem == MemoryType.SRAM:
-            init = self.__and(self._read_sram(SramDataSubcode.ChipSettings)[3], 0b00000110)
+            init = self.__and(self._read_sram(SramDataSubcode.ChipSettings)[3] >> 2, 0b00000110)
             self._write_sram(SramDataSubcode.ChipSettings, 3, value + 0x80 + init)
         elif mem == MemoryType.Flash:
             self._write_flash_byte(FlashDataSubcode.ChipSettings, 3, [2], [value])
     
-    adc_reference_bit = property(read_adc_reference_bit, write_adc_reference_bit)
+    adc_reference_source = property(read_adc_reference_source, write_adc_reference_source)
 
     def read_dac_voltage_reference(self, mem:MemoryType = None) -> VoltageReferenceValue:
         """Reads DAC voltage reference settings.
@@ -1404,7 +1406,7 @@ class MCP2221():
 
     dac_voltage_reference = property(read_dac_voltage_reference, write_dac_voltage_reference)
 
-    def read_dac_reference_bit(self, mem:MemoryType = None) -> VoltageReferenceSource:
+    def read_dac_reference_source(self, mem:MemoryType = None) -> VoltageReferenceSource:
         """Reads DAC reference flag.
 
         Parameters:
@@ -1416,7 +1418,7 @@ class MCP2221():
         fct = self.__get_mem_read_function(mem)
         return VoltageReferenceSource(fct(FlashDataSubcode.ChipSettings, 2, [5])[0])
 
-    def write_dac_reference_bit(self, value:VoltageReferenceSource, mem:MemoryType = None) -> None:
+    def write_dac_reference_source(self, value:VoltageReferenceSource, mem:MemoryType = None) -> None:
         """Writes DAC reference flag.
 
         Parameters:
@@ -1430,7 +1432,7 @@ class MCP2221():
         elif mem == MemoryType.Flash:
             self._write_flash_byte(FlashDataSubcode.ChipSettings, 2, [5], [value])
     
-    dac_reference_bit = property(read_dac_reference_bit, write_dac_reference_bit)
+    dac_reference_source = property(read_dac_reference_source, write_dac_reference_source)
 
     def read_dac_powerup_value(self) -> int:
         """Reads DAC power-up value from flash memory.
