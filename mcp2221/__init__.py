@@ -85,9 +85,11 @@ class MCP2221():
         adc_reference_source(VoltageReferenceSource): ADC voltage reference source
         dac_voltage_reference(VoltageReferenceValue): DAC voltage reference settings
         dac_reference_source(VoltageReferenceSource): DAC voltage reference source
+        dac_powerup_value(int): DAC power-up value
         adc0_value(int): ADC 0 value (read-only)
         adc1_value(int): ADC 1 value (read-only)
         adc2_value(int): ADC 2 value (read-only)
+        dac_value(int): DAC value (write-only, 5 bit)
     
     Protected attributes:
         _opened(bool): True if associated device is opened, False otherwise
@@ -1451,7 +1453,7 @@ class MCP2221():
         """
         self._write_flash_byte(FlashDataSubcode.ChipSettings, 2, [0, 1, 2, 3 ,4], self.__byte_to_bits(value, 5))
     
-    initial_dac_value = property(read_dac_powerup_value, write_dac_powerup_value)
+    dac_powerup_value = property(read_dac_powerup_value, write_dac_powerup_value)
 
     def read_adc(self, idx:int) -> int:
         """Reads ADC value.
@@ -1478,9 +1480,11 @@ class MCP2221():
         """Writes DAC value.
 
         Parameters:
-            value(int): DAC value
+            value(int): DAC value (5 bit)
         """
         self._write_sram(SramDataSubcode.ChipSettings, 2, (value & 0x1f) + 0x80)
+
+    dac_value = property(None, write_dac)
 
     #########
     # Other #
