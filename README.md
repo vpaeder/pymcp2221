@@ -29,5 +29,14 @@ Every feature marked *ok* is implemented but not thoroughly tested at this point
 # Setup
 ... not written yet ...
 
-# Example
+# Examples
 ... not written yet ...
+
+# API
+I'll format docs in a neat way at some point. In the meantime you can rely on python docstrings, which are rather complete already.
+
+Two ways to do that:
+1) from the command line, use pydoc:
+    ` $ pydoc mcp2221`
+2) from within python:
+    ` $ import mcp2221; help(mcp2221)`
