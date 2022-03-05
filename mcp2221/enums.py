@@ -175,5 +175,5 @@ class MemoryType(enum.IntEnum):
 
 class VoltageReferenceSource(enum.IntEnum):
     """Voltage reference source for ADCs and DAC."""
-    Internal = 0x00
-    Vdd = 0x01
+    Vdd = 0x00
+    Internal = 0x01
