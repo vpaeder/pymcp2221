@@ -1272,9 +1272,9 @@ class MCP2221():
             mode(GPIODirection): GPIO pin direction code
         """
         self.__check_gpio_pin_index(pin)
-        cmd = bytearray([0x50])
+        cmd = bytearray([0x50, 0x00])
         for n in range(4):
-            cmd += bytearray([0x00, 0x00, 0x01 if pin == n else 0x00, mode])
+            cmd += bytearray([0x00, 0x00, 0x01 if pin == n else 0x00, mode if pin == n else 0x00])
         self._write(*cmd)
     
     gpio0_direction = property(lambda s: s.gpio_read_direction(0), lambda s, v: s.gpio_write_direction(0, v))
@@ -1305,9 +1305,9 @@ class MCP2221():
             value(bool): GPIO pin value
         """
         self.__check_gpio_pin_index(pin)
-        cmd = bytearray([0x50])
+        cmd = bytearray([0x50, 0x00])
         for n in range(4):
-            cmd += bytearray([0x01 if pin == n else 0x00, value, 0x00, 0x00])
+            cmd += bytearray([0x01 if pin == n else 0x00, value if pin == n else 0x00, 0x00, 0x00])
         self._write(*cmd)
 
     gpio0_value = property(lambda s: s.gpio_get_value(0), lambda s, v: s.gpio_set_value(0, v))
