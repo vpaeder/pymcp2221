@@ -31,7 +31,7 @@ Every feature marked *ok* is implemented but not thoroughly tested at this point
 ... not written yet ...
 
 # Examples
-... not written yet ...
+See *examples* folder.
 
 # API
 I'll format docs in a neat way at some point. In the meantime you can rely on python docstrings, which are rather complete already.
