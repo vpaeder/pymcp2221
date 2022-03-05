@@ -39,4 +39,4 @@ Two ways to do that:
 1) from the command line, use pydoc:
     ` $ pydoc mcp2221`
 2) from within python:
-    ` $ import mcp2221; help(mcp2221)`
+    ` >>> import mcp2221; help(mcp2221)`
