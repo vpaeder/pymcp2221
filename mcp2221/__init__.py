@@ -1110,13 +1110,13 @@ class MCP2221():
         """
         self.__check_gpio_pin_index(gpio_num)
         if gpio_num == 0:
-            self.gpio0_function(GPIO0Function.GPIO)
+            self.gpio0_write_function(GPIO0Function.GPIO)
         elif gpio_num == 1:
-            self.gpio1_function(GPIO1Function.GPIO)
+            self.gpio1_write_function(GPIO1Function.GPIO)
         elif gpio_num == 2:
-            self.gpio2_function(GPIO2Function.GPIO)
+            self.gpio2_write_function(GPIO2Function.GPIO)
         elif gpio_num == 3:
-            self.gpio3_function(GPIO3Function.GPIO)
+            self.gpio3_write_function(GPIO3Function.GPIO)
         self._write_flash_byte(FlashDataSubcode.GPSettings, gpio_num, [3], [value])
 
     gpio0_powerup_direction = property(lambda s: s.gpio_read_powerup_direction(0), lambda s, v: s.gpio_write_powerup_direction(0, v))
@@ -1152,7 +1152,7 @@ class MCP2221():
         self.__check_gpio_pin_index(gpio_num)
         if mem == None: mem = self._mem_target
         if mem == MemoryType.SRAM:
-            self._write_sram(SramDataSubcode.GPSettings, 8 + gpio_num, value)
+            self._write_sram(SramDataSubcode.GPSettings, gpio_num, value)
         elif mem == MemoryType.Flash:
             self._write_flash_byte(FlashDataSubcode.GPSettings, gpio_num, [0, 1, 2], self.__byte_to_bits(value, 3))
 
