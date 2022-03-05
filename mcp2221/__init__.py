@@ -1277,10 +1277,10 @@ class MCP2221():
             cmd += bytearray([0x00, 0x00, 0x01 if pin == n else 0x00, mode])
         self._write(*cmd)
     
-    gpio0_direction = property(lambda s: s.gpio_get_direction(0), lambda s, v: s.gpio_set_direction(0, v))
-    gpio1_direction = property(lambda s: s.gpio_get_direction(1), lambda s, v: s.gpio_set_direction(1, v))
-    gpio2_direction = property(lambda s: s.gpio_get_direction(2), lambda s, v: s.gpio_set_direction(2, v))
-    gpio3_direction = property(lambda s: s.gpio_get_direction(3), lambda s, v: s.gpio_set_direction(3, v))
+    gpio0_direction = property(lambda s: s.gpio_read_direction(0), lambda s, v: s.gpio_write_direction(0, v))
+    gpio1_direction = property(lambda s: s.gpio_read_direction(1), lambda s, v: s.gpio_write_direction(1, v))
+    gpio2_direction = property(lambda s: s.gpio_read_direction(2), lambda s, v: s.gpio_write_direction(2, v))
+    gpio3_direction = property(lambda s: s.gpio_read_direction(3), lambda s, v: s.gpio_write_direction(3, v))
     
     def gpio_get_value(self, pin:int) -> bool:
         """Gets GPIO pin value.
