@@ -22,6 +22,6 @@ class MCPWarning(Warning):
     """Base class for custom warnings."""
     pass
 
-class InvalidReturnValueWarning(MCPException):
+class InvalidReturnValueWarning(MCPWarning):
     """This is used to mention that the chip returned an invalid value."""
     pass
