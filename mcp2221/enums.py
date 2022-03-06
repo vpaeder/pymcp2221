@@ -1,9 +1,9 @@
 """Enums for MCP2221 driver."""
 
-__all__ = ["I2CSpeed", "ClockDutyCycle", "VoltageReferenceValue", "GPIO0Function", "GPIO1Function",
+__all__ = ["I2CSpeed", "ClockDutyCycle", "ReferenceVoltageValue", "GPIO0Function", "GPIO1Function",
            "GPIO2Function", "GPIO3Function", "I2CCancelTransferResponse", "I2CSetSpeedResponse",
            "FlashDataSubcode", "SramDataSubcode", "I2CMode", "GPIODirection",
-           "SecurityOption", "MemoryType", "ClockOutputFrequency", "VoltageReferenceSource"]
+           "SecurityOption", "MemoryType", "ClockFrequency", "ReferenceVoltageSource"]
 
 import enum
 
@@ -32,7 +32,7 @@ class ClockDutyCycle(enum.IntEnum):
     Percent_50 = 0x02
     Percent_75 = 0x03
 
-class VoltageReferenceValue(enum.IntEnum):
+class ReferenceVoltageValue(enum.IntEnum):
     """Voltage reference for ADCs or DAC. Values are in V (replace underscore
     with dot, e.g. 1_024V => 1.024V).
     """
@@ -41,7 +41,7 @@ class VoltageReferenceValue(enum.IntEnum):
     Voltage2_048V = 0x02
     Voltage4_096V = 0x03
 
-class ClockOutputFrequency(enum.IntEnum):
+class ClockFrequency(enum.IntEnum):
     """Clock output frequency. This is the frequency
     of the clock signal when output to GPIO 1.
     """
@@ -173,7 +173,7 @@ class MemoryType(enum.IntEnum):
     SRAM = 0x00
     Flash = 0x01
 
-class VoltageReferenceSource(enum.IntEnum):
+class ReferenceVoltageSource(enum.IntEnum):
     """Voltage reference source for ADCs and DAC."""
     Vdd = 0x00
     Internal = 0x01
