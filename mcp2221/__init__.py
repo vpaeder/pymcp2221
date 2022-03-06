@@ -47,7 +47,7 @@ class MCP2221():
         suspend_mode_logic_level(bool): suspend mode signal level
         usb_configured_logic_level(bool): level of 'USB configured' signal
         security_option(SecurityOption): chip security option
-        clock_output_frequency(ClockOutputFrequency): clock output frequency
+        clock_output_frequency(ClockFrequency): clock output frequency
         clock_output_duty_cycle(ClockDutyCycle): clock output duty cycle
         usb_vid(int): USB vendor ID
         usb_pid(int): USB product ID
@@ -57,6 +57,7 @@ class MCP2221():
         usb_manufacturer_descriptor(str): USB manufacturer descriptor
         usb_product_descriptor(str): USB product descriptor
         usb_serial_number_descriptor(str): USB serial number descriptor
+        chip_factory_serial_number(str): chip factory serial number
         password(str): flash access password (set only)
         interrupt_on_falling_edge(bool): interrupt on falling edge flag
         interrupt_on_rising_edge(bool): interrupt on rising edge flag
@@ -81,10 +82,10 @@ class MCP2221():
         gpio1_value(bool): GPIO pin 1 value
         gpio2_value(bool): GPIO pin 2 value
         gpio3_value(bool): GPIO pin 3 value
-        adc_voltage_reference(VoltageReferenceValue): ADC voltage reference settings
-        adc_reference_source(VoltageReferenceSource): ADC voltage reference source
-        dac_voltage_reference(VoltageReferenceValue): DAC voltage reference settings
-        dac_reference_source(VoltageReferenceSource): DAC voltage reference source
+        adc_reference_voltage(ReferenceVoltageValue): ADC reference voltage settings
+        adc_reference_source(ReferenceVoltageSource): ADC reference voltage source
+        dac_reference_voltage(ReferenceVoltageValue): DAC reference voltage settings
+        dac_reference_source(ReferenceVoltageSource): DAC reference voltage source
         dac_powerup_value(int): DAC power-up value
         adc0_value(int): ADC 0 value (read-only)
         adc1_value(int): ADC 1 value (read-only)
@@ -154,7 +155,9 @@ class MCP2221():
     def close(self):
         """Closes access to associated device.
         """
-        self.dev.close()
+        if self._opened:
+            self.dev.close()
+            self._opened = False
     
     def _build_command(self, *args:bytes) -> bytearray:
         """Internal command. Builds a command string with given elements.
@@ -395,7 +398,7 @@ class MCP2221():
             cmd[byte] = self.__and(cmd[byte], self.__not(1<<bit))
             cmd[byte] = self.__or(cmd[byte], 1<<bit if value else 0)
         if byte == 0:
-            cmd += self._password
+            cmd += self._password.encode("utf-8")
         self._write(0xb1, code, *cmd)
     
     def _read_sram_byte(self, code:SramDataSubcode, byte:int, bits:'list[int]') -> list:
@@ -530,21 +533,21 @@ class MCP2221():
 
     def read_suspend_mode_logic_level(self) -> bool:
         """Reads pin level for suspend mode signal. This is the value given
-        to the suspend mode signal when chip is in suspend mode.
+        to the suspend mode signal when chip is NOT in suspend mode.
 
         Returns:
             bool: value of suspend mode signal level.
         """
-        return not(self._read_flash_byte(FlashDataSubcode.ChipSettings, 0, [3])[0])
+        return self._read_flash_byte(FlashDataSubcode.ChipSettings, 0, [3])[0]
 
     def write_suspend_mode_logic_level(self, value:bool) -> None:
         """Writes pin level for suspend mode signal. This is the value given
-           to the suspend mode signal when chip is in suspend mode.
+           to the suspend mode signal when chip is NOT in suspend mode.
 
         Parameters:
             value(bool): value of suspend mode signal level
         """
-        self._write_flash_byte(FlashDataSubcode.ChipSettings, 0, [3], [not(value)])
+        self._write_flash_byte(FlashDataSubcode.ChipSettings, 0, [3], [value])
     
     suspend_mode_logic_level = property(read_suspend_mode_logic_level, write_suspend_mode_logic_level)
 
@@ -589,7 +592,7 @@ class MCP2221():
     
     security_option = property(read_security_option, write_security_option)
 
-    def read_clock_output_frequency(self, mem:MemoryType = None) -> ClockOutputFrequency:
+    def read_clock_output_frequency(self, mem:MemoryType = None) -> ClockFrequency:
         """Reads clock output frequency. This is the frequency of clock output
         signal if directed to GPIO pin 1.
 
@@ -597,18 +600,18 @@ class MCP2221():
             mem(MemoryType): memory to read from (default SRAM)
 
         Returns:
-            ClockOutputFrequency: enum code for clock output frequency.
+            ClockFrequency: enum code for clock output frequency.
         """
         fct = self.__get_mem_read_function(mem)
         ret = fct(FlashDataSubcode.ChipSettings, 1, [0, 1, 2])
-        return ClockOutputFrequency(self.__bits_to_byte(ret))
+        return ClockFrequency(self.__bits_to_byte(ret))
 
-    def write_clock_output_frequency(self, value:ClockOutputFrequency, mem:MemoryType = None) -> None:
+    def write_clock_output_frequency(self, value:ClockFrequency, mem:MemoryType = None) -> None:
         """Writes clock output frequency. This is the frequency of clock output
         signal if directed to GPIO pin 1. It doesn't change internal clock frequency.
 
         Parameters:
-            value(ClockOutputFrequency): enum code for clock output frequency
+            value(ClockFrequency): enum code for clock output frequency
             mem(MemoryType): memory to write to (default SRAM)
         """
         if mem == None: mem = self._mem_target
@@ -701,7 +704,7 @@ class MCP2221():
         Returns:
             bool: value of 'USB self-powered' attribute.
         """
-        return self._read_flash_byte(8, [6])[0]
+        return self._read_flash_byte(FlashDataSubcode.ChipSettings, 8, [6])[0]
     
     def write_usb_self_powered_attribute(self, value:bool) -> None:
         """Writes 'USB self-powered' attribute.
@@ -737,7 +740,7 @@ class MCP2221():
         Returns:
             int: value of USB current in enumeration phase, in mA.
         """
-        return self._read_flash(FlashDataSubcode.ChipSettings)[8]*2
+        return self._read_flash(FlashDataSubcode.ChipSettings)[9]*2
     
     def write_usb_current(self, value:int) -> None:
         """Writes USB current value for enumeration phase, in mA.
@@ -746,7 +749,7 @@ class MCP2221():
             value(int): value of USB current in enumeration phase, in mA
         """
         ret = self._read_flash(FlashDataSubcode.ChipSettings)
-        ret[9] = value/2
+        ret[9] = int(value/2)
         self._write(0xb1, FlashDataSubcode.ChipSettings, *ret)
     
     usb_current = property(read_usb_current, write_usb_current)
@@ -773,7 +776,7 @@ class MCP2221():
         if len(value)>30:
             raise InvalidParameterException("Descriptor too long.")
         bval = value.encode("utf-16")
-        self._write(0xb1, code, len(bval)+2, 0x03, *bval)
+        self._write(0xb1, code, len(bval), 0x03, *bval)
 
     def read_usb_manufacturer_descriptor(self) -> str:
         """Reads USB manufacturer descriptor from flash memory.
@@ -782,7 +785,7 @@ class MCP2221():
             str: USB manufacturer descriptor string.
         """
         data = self._read_flash(FlashDataSubcode.USBManufacturerDescriptorString)
-        return bytes(data[:-2]).decode('utf-16')
+        return bytes(data).decode('utf-16')
     
     def write_usb_manufacturer_descriptor(self, value:str) -> None:
         """Writes USB manufacturer descriptor to flash memory.
@@ -801,7 +804,7 @@ class MCP2221():
             str: USB product descriptor string.
         """
         data = self._read_flash(FlashDataSubcode.USBProductDescriptorString)
-        return bytes(data[:-2]).decode('utf-16')
+        return bytes(data).decode('utf-16')
 
     def write_usb_product_descriptor(self, value:str) -> None:
         """Writes USB product descriptor to flash memory.
@@ -820,7 +823,7 @@ class MCP2221():
             str: USB serial number descriptor string.
         """
         data = self._read_flash(FlashDataSubcode.USBSerialNumberDescriptorString)
-        return bytes(data[:-2]).decode('utf-16')
+        return bytes(data).decode('utf-16')
 
     def write_usb_serial_number_descriptor(self, value:str) -> None:
         """Writes USB serial number descriptor to flash memory.
@@ -831,6 +834,27 @@ class MCP2221():
         self._write_usb_descriptor(FlashDataSubcode.USBSerialNumberDescriptorString, value)
     
     usb_serial_number_descriptor = property(read_usb_serial_number_descriptor, write_usb_serial_number_descriptor)
+
+    def read_chip_factory_serial_number(self) -> str:
+        """Reads chip factory serial number from flash memory.
+
+        Returns:
+            str: USB chip factory serial number.
+        """
+        data = self._read_flash(FlashDataSubcode.ChipFactorySerialNumber)
+        return bytes(data).decode("utf-8")
+    
+    def write_chip_factory_serial_number(self, value:str) -> None:
+        """Writes chip factory serial number to flash memory.
+
+        Parameters:
+            value(str): chip factory serial number
+        """
+        if len(value)>60:
+            raise InvalidParameterException("Serial number too long.")
+        self._write(0xb1, FlashDataSubcode.ChipFactorySerialNumber, len(value), 0x03, *value.encode("utf-8"))
+
+    chip_factory_serial_number = property(read_chip_factory_serial_number, write_chip_factory_serial_number)
 
     #########################
     # Flash access password #
@@ -1320,25 +1344,25 @@ class MCP2221():
     ######################
     # ADC and DAC access #
     ######################
-    def read_adc_voltage_reference(self, mem:MemoryType = None) -> VoltageReferenceValue:
-        """Reads ADC voltage reference settings.
+    def read_adc_reference_voltage(self, mem:MemoryType = None) -> ReferenceVoltageValue:
+        """Reads ADC reference voltage settings.
 
         Parameters:
             mem(MemoryType): enum code for memory type (flash or SRAM)
         
         Returns:
-            VoltageReferenceValue: enum code for voltage reference settings.
+            ReferenceVoltageValue: enum code for reference voltage settings.
         """
         fct = self.__get_mem_read_function(mem)
         ret = fct(FlashDataSubcode.ChipSettings, 3, [3, 4])
-        return VoltageReferenceValue(self.__bits_to_byte(ret))
+        return ReferenceVoltageValue(self.__bits_to_byte(ret))
     
-    def write_adc_voltage_reference(self, value:VoltageReferenceValue, mem:MemoryType = None) -> None:
-        """Writes ADC voltage reference settings.
+    def write_adc_reference_voltage(self, value:ReferenceVoltageValue, mem:MemoryType = None) -> None:
+        """Writes ADC reference voltage settings.
 
         Parameters:
             mem(MemoryType): enum code for memory type (flash or SRAM)
-            VoltageReferenceValue: enum code for voltage reference settings
+            ReferenceVoltageValue: enum code for reference voltage settings
         """
         if mem == None: mem = self._mem_target
         if mem == MemoryType.SRAM:
@@ -1349,25 +1373,25 @@ class MCP2221():
         elif mem == MemoryType.Flash:
             self._write_flash_byte(FlashDataSubcode.ChipSettings, 3, [3, 4], self.__byte_to_bits(value, 2))
 
-    adc_voltage_reference = property(read_adc_voltage_reference, write_adc_voltage_reference)
+    adc_reference_voltage = property(read_adc_reference_voltage, write_adc_reference_voltage)
 
-    def read_adc_reference_source(self, mem:MemoryType = None) -> VoltageReferenceSource:
+    def read_adc_reference_source(self, mem:MemoryType = None) -> ReferenceVoltageSource:
         """Reads ADC reference flag.
 
         Parameters:
             mem(MemoryType): enum code for memory type (flash or SRAM)
         
         Returns:
-            VoltageReferenceSource: enum code for voltage reference source.
+            ReferenceVoltageSource: enum code for reference voltage source.
         """
         fct = self.__get_mem_read_function(mem)
-        return VoltageReferenceSource(fct(FlashDataSubcode.ChipSettings, 3, [2])[0])
+        return ReferenceVoltageSource(fct(FlashDataSubcode.ChipSettings, 3, [2])[0])
 
-    def write_adc_reference_source(self, value:VoltageReferenceSource, mem:MemoryType = None) -> None:
+    def write_adc_reference_source(self, value:ReferenceVoltageSource, mem:MemoryType = None) -> None:
         """Writes ADC reference flag.
 
         Parameters:
-            value(VoltageReferenceSource): enum code for voltage reference source
+            value(ReferenceVoltageSource): enum code for reference voltage source
             mem(MemoryType): enum code for memory type (flash or SRAM)
         """
         if mem == None: mem = self._mem_target
@@ -1379,25 +1403,25 @@ class MCP2221():
     
     adc_reference_source = property(read_adc_reference_source, write_adc_reference_source)
 
-    def read_dac_voltage_reference(self, mem:MemoryType = None) -> VoltageReferenceValue:
-        """Reads DAC voltage reference settings.
+    def read_dac_reference_voltage(self, mem:MemoryType = None) -> ReferenceVoltageValue:
+        """Reads DAC reference voltage settings.
 
         Parameters:
             mem(MemoryType): enum code for memory type (flash or SRAM)
         
         Returns:
-            VoltageReferenceValue: enum code for voltage reference settings.
+            ReferenceVoltageValue: enum code for reference voltage settings.
         """
         fct = self.__get_mem_read_function(mem)
         ret = fct(FlashDataSubcode.ChipSettings, 2, [6, 7])
-        return VoltageReferenceValue(self.__bits_to_byte(ret))
+        return ReferenceVoltageValue(self.__bits_to_byte(ret))
     
-    def write_dac_voltage_reference(self, value:VoltageReferenceValue, mem:MemoryType = None) -> None:
-        """Writes DAC voltage reference settings.
+    def write_dac_reference_voltage(self, value:ReferenceVoltageValue, mem:MemoryType = None) -> None:
+        """Writes DAC reference voltage settings.
 
         Parameters:
             mem(MemoryType): enum code for memory type (flash or SRAM)
-            VoltageReferenceValue: enum code for voltage reference settings
+            ReferenceVoltageValue: enum code for reference voltage settings
         """
         if mem == None: mem = self._mem_target
         if mem == MemoryType.SRAM:
@@ -1406,25 +1430,25 @@ class MCP2221():
         elif mem == MemoryType.Flash:
             self._write_flash_byte(FlashDataSubcode.ChipSettings, 2, [6, 7], self.__byte_to_bits(value, 2))
 
-    dac_voltage_reference = property(read_dac_voltage_reference, write_dac_voltage_reference)
+    dac_reference_voltage = property(read_dac_reference_voltage, write_dac_reference_voltage)
 
-    def read_dac_reference_source(self, mem:MemoryType = None) -> VoltageReferenceSource:
+    def read_dac_reference_source(self, mem:MemoryType = None) -> ReferenceVoltageSource:
         """Reads DAC reference flag.
 
         Parameters:
             mem(MemoryType): enum code for memory type (flash or SRAM)
         
         Returns:
-            VoltageReferenceSource: enum code for voltage reference source.
+            ReferenceVoltageSource: enum code for reference voltage source.
         """
         fct = self.__get_mem_read_function(mem)
-        return VoltageReferenceSource(fct(FlashDataSubcode.ChipSettings, 2, [5])[0])
+        return ReferenceVoltageSource(fct(FlashDataSubcode.ChipSettings, 2, [5])[0])
 
-    def write_dac_reference_source(self, value:VoltageReferenceSource, mem:MemoryType = None) -> None:
+    def write_dac_reference_source(self, value:ReferenceVoltageSource, mem:MemoryType = None) -> None:
         """Writes DAC reference flag.
 
         Parameters:
-            value(VoltageReferenceSource): enum code for voltage reference source
+            value(ReferenceVoltageSource): enum code for reference voltage source
             mem(MemoryType): enum code for memory type (flash or SRAM)
         """
         if mem == None: mem = self._mem_target
