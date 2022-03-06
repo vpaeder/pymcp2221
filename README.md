@@ -7,7 +7,7 @@ First and foremost, there is already a python package for the same chip availabl
 This code is currently in alpha stage. I'm writing unittests and will likely find remaining bugs. Some properties and methods may also change name.
 
 ##### Implemented features
-- Status/Set Parameters (0x10) - ok, except I2C line monitoring (bytes 9 to 23 and 25)
+- Status/Set Parameters (0x10) - ok, except I2C line monitoring (bytes 9 to 23)
 - Read Flash Data (0xB0) - ok
 - Write Flash Data (0xB1) - ok
 - Send Flash Access Password (0xB2) - ok
