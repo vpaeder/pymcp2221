@@ -15,6 +15,7 @@ protocol converters, together with helper functions and classes.
 __all__ = ['MCP2221', 'find_devices']
 
 import hid
+import warnings
 
 from .enums import *
 from .exceptions import *
@@ -1322,7 +1323,7 @@ class MCP2221():
         self.__check_gpio_pin_index(pin)
         value = self._write(0x51)[2 + pin*2]
         if value == 0xee:
-            raise InvalidReturnValueWarning("Pin not set for GPIO operation")
+            warnings.warn("Pin not set for GPIO operation", InvalidReturnValueWarning)
         return bool(value)
 
     def gpio_write_value(self, pin:int, value:bool) -> None:
