@@ -880,7 +880,7 @@ class MCP2221():
         """
         self.__check_password_validity(value)
         self._password = value
-        data = self._read_flash(FlashDataSubcode.ChipSettings) + list(value.encode("utf-8"))
+        data = self._read_flash(FlashDataSubcode.ChipSettings) + bytearray(value.encode("utf-8"))
         self._write(0xb1, FlashDataSubcode.ChipSettings, *data)
     
     def unlock(self, value:str) -> None:
@@ -890,7 +890,7 @@ class MCP2221():
             value(str): password string (max. 8 characters)
         """
         # tries to unlock with given password
-        self._write(0xb2, 0x00, *value)
+        self._write(0xb2, 0x00, *value.encode("utf-8"))
         self._password = value
     
     password = property(None, unlock)
@@ -1009,7 +1009,7 @@ class MCP2221():
         """Tells if I2C bus has pending data to be read.
 
         Returns:
-            int: 0 for no, 1 for yes and 2 for irrelevant.
+            int: 0 for no, 1 for yes and 2 for irrelevant?.
         """
         return self._write(0x10)[25]
 
