@@ -1044,7 +1044,7 @@ class MCP2221():
             chunk_len = min(rem_bytes, 60)
             chunk = data[dlen-rem_bytes:dlen-rem_bytes+chunk_len].encode("utf-8")
             while True:
-                ret = self._write(i2c_mode, chunk_len>>8, chunk_len & 0xff, address<<1, *chunk)
+                ret = self._write(i2c_mode, dlen & 0xff, dlen>>8, address<<1, *chunk)
                 if ret[1] == 0: break
             rem_bytes -= chunk_len
 
@@ -1060,17 +1060,19 @@ class MCP2221():
             bytearray: data read from I2C slave.
         """
         self._check_i2c_parameters(address, length)
+        if i2c_mode == I2CMode.NoStop:
+            raise InvalidParameterException("I2C mode No Stop not available for read.")
         result = bytearray()
         while len(result)<length:
             while True:
-                ret = self._write(i2c_mode+1, length>>8, length & 0xff, address<<1 | 0x01)
+                ret = self._write(i2c_mode+1, length & 0xff, length>>8, address<<1 | 0x01)
                 if ret[1] == 0: break
             ret = self._write(0x40)
             if ret[1] == 0x41:
                 raise FailedCommandException("Error reading from I2C slave.")
             if ret[3] == 0x7f:
                 raise FailedCommandException("Error issued by I2C slave.")
-            result += bytearray(ret[4:4+ret[3]]).decode("utf-8")
+            result += bytearray(ret[4:4+ret[3]])
         return result
     
     #################
