@@ -1245,8 +1245,7 @@ class MCP2221():
             # assigned with 0x60; to avoid overwriting pin value/dir, we must get
             # data with 0x51
             init = self._write(0x51)[(2+2*gpio_num):(4+2*gpio_num)]
-            value = self.__and((init[0]<<4) + (init[1]<<3), 0b00011000)\
-                    + self.__and(value, 0b00000111)
+            value += (init[0]<<4) + (init[1]<<3)
             self._write_sram(SramDataSubcode.GPSettings, gpio_num, value)
         elif mem == MemoryType.Flash:
             self._write_flash_byte(FlashDataSubcode.GPSettings, gpio_num, [0, 1, 2], self.__byte_to_bits(value, 3))
