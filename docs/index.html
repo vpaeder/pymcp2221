@@ -1,0 +1,1009 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: package mcp2221</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>mcp2221</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/vpaeder/Projects/pymcp2221/mcp2221/__init__.py">/Users/vpaeder/Projects/pymcp2221/mcp2221/__init__.py</a></font></td></tr></table>
+    <p><tt>A&nbsp;driver&nbsp;for&nbsp;the&nbsp;Microchip&nbsp;<a href="#MCP2221">MCP2221</a>/MCP2221A&nbsp;USB&nbsp;2.0&nbsp;to&nbsp;I2C/UART<br>
+protocol&nbsp;converters,&nbsp;together&nbsp;with&nbsp;helper&nbsp;functions&nbsp;and&nbsp;classes.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;Classes:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221">MCP2221</a><br>
+&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;Functions:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;find_devices<br>
+&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;Submodules:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enums<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exceptions</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Package Contents</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="mcp2221.enums.html">enums</a><br>
+</td><td width="25%" valign=top><a href="mcp2221.exceptions.html">exceptions</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="mcp2221.html#MCP2221">MCP2221</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="MCP2221">class <strong>MCP2221</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#MCP2221">MCP2221</a>(dev_descriptor:&nbsp;dict&nbsp;=&nbsp;None,&nbsp;password:&nbsp;str&nbsp;=&nbsp;'')<br>
+&nbsp;<br>
+A&nbsp;driver&nbsp;for&nbsp;the&nbsp;Microchip&nbsp;<a href="#MCP2221">MCP2221</a>/MCP2221A<br>
+USB&nbsp;2.0&nbsp;to&nbsp;I2C/UART&nbsp;protocol&nbsp;converters<br>
+&nbsp;<br>
+Attributes:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-i2c_speed">i2c_speed</a>(I2CSpeed):&nbsp;enum&nbsp;code&nbsp;for&nbsp;I2C&nbsp;transfer&nbsp;speed<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-default_memory_target">default_memory_target</a>(MemoryType):&nbsp;default&nbsp;memory&nbsp;target<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-cdc_sn_enumeration_enable_flag">cdc_sn_enumeration_enable_flag</a>(bool):&nbsp;CDC&nbsp;serial&nbsp;number&nbsp;enumeration&nbsp;enable&nbsp;flag<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-led_idle_uart_rx_level">led_idle_uart_rx_level</a>(bool):&nbsp;UART&nbsp;RX&nbsp;LED&nbsp;idle&nbsp;signal&nbsp;level<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-led_idle_uart_tx_level">led_idle_uart_tx_level</a>(bool):&nbsp;UART&nbsp;TX&nbsp;LED&nbsp;idle&nbsp;signal&nbsp;level<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-led_idle_i2c_level">led_idle_i2c_level</a>(bool):&nbsp;I2C&nbsp;LED&nbsp;idle&nbsp;signal&nbsp;level<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-suspend_mode_logic_level">suspend_mode_logic_level</a>(bool):&nbsp;suspend&nbsp;mode&nbsp;signal&nbsp;level<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-usb_configured_logic_level">usb_configured_logic_level</a>(bool):&nbsp;level&nbsp;of&nbsp;'USB&nbsp;configured'&nbsp;signal<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-security_option">security_option</a>(SecurityOption):&nbsp;chip&nbsp;security&nbsp;option<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-clock_output_frequency">clock_output_frequency</a>(ClockFrequency):&nbsp;clock&nbsp;output&nbsp;frequency<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-clock_output_duty_cycle">clock_output_duty_cycle</a>(ClockDutyCycle):&nbsp;clock&nbsp;output&nbsp;duty&nbsp;cycle<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-usb_vid">usb_vid</a>(int):&nbsp;USB&nbsp;vendor&nbsp;ID<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-usb_pid">usb_pid</a>(int):&nbsp;USB&nbsp;product&nbsp;ID<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-usb_self_powered_attribute">usb_self_powered_attribute</a>(bool):&nbsp;USB&nbsp;self-powered&nbsp;attribute<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-usb_remote_wake_up_attribute">usb_remote_wake_up_attribute</a>(bool):&nbsp;USB&nbsp;remote&nbsp;wake-up&nbsp;attribute<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-usb_current">usb_current</a>(int):&nbsp;USB&nbsp;current&nbsp;in&nbsp;enumeration&nbsp;phase,&nbsp;in&nbsp;mA<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-usb_manufacturer_descriptor">usb_manufacturer_descriptor</a>(str):&nbsp;USB&nbsp;manufacturer&nbsp;descriptor<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-usb_product_descriptor">usb_product_descriptor</a>(str):&nbsp;USB&nbsp;product&nbsp;descriptor<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-usb_serial_number_descriptor">usb_serial_number_descriptor</a>(str):&nbsp;USB&nbsp;serial&nbsp;number&nbsp;descriptor<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-chip_factory_serial_number">chip_factory_serial_number</a>(str):&nbsp;chip&nbsp;factory&nbsp;serial&nbsp;number<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-password">password</a>(str):&nbsp;flash&nbsp;access&nbsp;password&nbsp;(set&nbsp;only)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-interrupt_on_falling_edge">interrupt_on_falling_edge</a>(bool):&nbsp;interrupt&nbsp;on&nbsp;falling&nbsp;edge&nbsp;flag<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-interrupt_on_rising_edge">interrupt_on_rising_edge</a>(bool):&nbsp;interrupt&nbsp;on&nbsp;rising&nbsp;edge&nbsp;flag<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-interrupt_flag">interrupt_flag</a>(bool):&nbsp;interrupt&nbsp;occurred&nbsp;flag<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-gpio0_powerup_value">gpio0_powerup_value</a>(bool):&nbsp;GPIO&nbsp;pin&nbsp;0&nbsp;power-up&nbsp;value<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-gpio1_powerup_value">gpio1_powerup_value</a>(bool):&nbsp;GPIO&nbsp;pin&nbsp;1&nbsp;power-up&nbsp;value<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-gpio2_powerup_value">gpio2_powerup_value</a>(bool):&nbsp;GPIO&nbsp;pin&nbsp;2&nbsp;power-up&nbsp;value<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-gpio3_powerup_value">gpio3_powerup_value</a>(bool):&nbsp;GPIO&nbsp;pin&nbsp;3&nbsp;power-up&nbsp;value<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-gpio0_powerup_direction">gpio0_powerup_direction</a>(GPIODirection):&nbsp;GPIO&nbsp;pin&nbsp;0&nbsp;power-up&nbsp;direction<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-gpio1_powerup_direction">gpio1_powerup_direction</a>(GPIODirection):&nbsp;GPIO&nbsp;pin&nbsp;1&nbsp;power-up&nbsp;direction<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-gpio2_powerup_direction">gpio2_powerup_direction</a>(GPIODirection):&nbsp;GPIO&nbsp;pin&nbsp;2&nbsp;power-up&nbsp;direction<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-gpio3_powerup_direction">gpio3_powerup_direction</a>(GPIODirection):&nbsp;GPIO&nbsp;pin&nbsp;3&nbsp;power-up&nbsp;direction<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-gpio0_function">gpio0_function</a>(GPIO0Function):&nbsp;GPIO&nbsp;pin&nbsp;0&nbsp;function<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-gpio1_function">gpio1_function</a>(GPIO1Function):&nbsp;GPIO&nbsp;pin&nbsp;1&nbsp;function<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-gpio2_function">gpio2_function</a>(GPIO2Function):&nbsp;GPIO&nbsp;pin&nbsp;2&nbsp;function<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-gpio3_function">gpio3_function</a>(GPIO3Function):&nbsp;GPIO&nbsp;pin&nbsp;3&nbsp;function<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-gpio0_direction">gpio0_direction</a>(GPIODirection):&nbsp;GPIO&nbsp;pin&nbsp;0&nbsp;direction<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-gpio1_direction">gpio1_direction</a>(GPIODirection):&nbsp;GPIO&nbsp;pin&nbsp;1&nbsp;direction<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-gpio2_direction">gpio2_direction</a>(GPIODirection):&nbsp;GPIO&nbsp;pin&nbsp;2&nbsp;direction<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-gpio3_direction">gpio3_direction</a>(GPIODirection):&nbsp;GPIO&nbsp;pin&nbsp;3&nbsp;direction<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-gpio0_value">gpio0_value</a>(bool):&nbsp;GPIO&nbsp;pin&nbsp;0&nbsp;value<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-gpio1_value">gpio1_value</a>(bool):&nbsp;GPIO&nbsp;pin&nbsp;1&nbsp;value<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-gpio2_value">gpio2_value</a>(bool):&nbsp;GPIO&nbsp;pin&nbsp;2&nbsp;value<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-gpio3_value">gpio3_value</a>(bool):&nbsp;GPIO&nbsp;pin&nbsp;3&nbsp;value<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-adc_reference_voltage">adc_reference_voltage</a>(ReferenceVoltageValue):&nbsp;ADC&nbsp;reference&nbsp;voltage&nbsp;settings<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-adc_reference_source">adc_reference_source</a>(ReferenceVoltageSource):&nbsp;ADC&nbsp;reference&nbsp;voltage&nbsp;source<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-dac_reference_voltage">dac_reference_voltage</a>(ReferenceVoltageValue):&nbsp;DAC&nbsp;reference&nbsp;voltage&nbsp;settings<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-dac_reference_source">dac_reference_source</a>(ReferenceVoltageSource):&nbsp;DAC&nbsp;reference&nbsp;voltage&nbsp;source<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-dac_powerup_value">dac_powerup_value</a>(int):&nbsp;DAC&nbsp;power-up&nbsp;value<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-adc0_value">adc0_value</a>(int):&nbsp;ADC&nbsp;0&nbsp;value&nbsp;(read-only)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-adc1_value">adc1_value</a>(int):&nbsp;ADC&nbsp;1&nbsp;value&nbsp;(read-only)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-adc2_value">adc2_value</a>(int):&nbsp;ADC&nbsp;2&nbsp;value&nbsp;(read-only)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-dac_value">dac_value</a>(int):&nbsp;DAC&nbsp;value&nbsp;(write-only,&nbsp;5&nbsp;bit)<br>
+&nbsp;<br>
+Protected&nbsp;attributes:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;_opened(bool):&nbsp;True&nbsp;if&nbsp;associated&nbsp;device&nbsp;is&nbsp;opened,&nbsp;False&nbsp;otherwise<br>
+&nbsp;&nbsp;&nbsp;&nbsp;_password(str):&nbsp;password&nbsp;string<br>
+&nbsp;&nbsp;&nbsp;&nbsp;_mem_target(MemoryType):&nbsp;default&nbsp;memory&nbsp;target&nbsp;for&nbsp;data&nbsp;both&nbsp;in&nbsp;flash&nbsp;and&nbsp;SRAM<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="MCP2221-__init__"><strong>__init__</strong></a>(self, dev_descriptor: dict = None, password: str = '')</dt><dd><tt>Class&nbsp;constructor.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dev_descriptor(dict):&nbsp;the&nbsp;device&nbsp;descriptor&nbsp;to&nbsp;open&nbsp;device&nbsp;from.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use&nbsp;find_devices&nbsp;to&nbsp;obtain&nbsp;one.&nbsp;(default&nbsp;None)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MCP2221-password">password</a>(str):&nbsp;8&nbsp;byte&nbsp;password&nbsp;to&nbsp;modify&nbsp;flash&nbsp;content&nbsp;(default&nbsp;"")<br>
+&nbsp;<br>
+Note:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;dev_descriptor&nbsp;is&nbsp;provided,&nbsp;device&nbsp;is&nbsp;opened&nbsp;automatically.&nbsp;If&nbsp;you<br>
+&nbsp;&nbsp;&nbsp;&nbsp;don't&nbsp;want&nbsp;this&nbsp;to&nbsp;happen,&nbsp;provide&nbsp;no&nbsp;descriptor&nbsp;and&nbsp;use&nbsp;<a href="#MCP2221-open">open</a>()&nbsp;method<br>
+&nbsp;&nbsp;&nbsp;&nbsp;at&nbsp;a&nbsp;later&nbsp;time.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-clear_interrupt_flag"><strong>clear_interrupt_flag</strong></a>(self) -&gt; None</dt><dd><tt>Clears&nbsp;the&nbsp;interrupt&nbsp;flag.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-close"><strong>close</strong></a>(self)</dt><dd><tt>Closes&nbsp;access&nbsp;to&nbsp;associated&nbsp;device.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-get_default_memory_target"><strong>get_default_memory_target</strong></a>(self) -&gt; mcp2221.enums.MemoryType</dt><dd><tt>Gets&nbsp;default&nbsp;memory&nbsp;target.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;MemoryType:&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-gpio0_read_function"><strong>gpio0_read_function</strong></a>(self, mem: mcp2221.enums.MemoryType = None) -&gt; mcp2221.enums.GPIO0Function</dt><dd><tt>Reads&nbsp;GPIO&nbsp;pin&nbsp;0&nbsp;function.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;GPIO0Function:&nbsp;enum&nbsp;code&nbsp;for&nbsp;GPIO&nbsp;pin&nbsp;0&nbsp;function.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-gpio0_write_function"><strong>gpio0_write_function</strong></a>(self, value: mcp2221.enums.GPIO0Function, mem: mcp2221.enums.MemoryType = None) -&gt; None</dt><dd><tt>Writes&nbsp;GPIO&nbsp;pin&nbsp;0&nbsp;function.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(GPIO0Function):&nbsp;enum&nbsp;code&nbsp;for&nbsp;GPIO&nbsp;pin&nbsp;0&nbsp;function.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-gpio1_read_function"><strong>gpio1_read_function</strong></a>(self, mem: mcp2221.enums.MemoryType = None) -&gt; mcp2221.enums.GPIO1Function</dt><dd><tt>Reads&nbsp;GPIO&nbsp;pin&nbsp;1&nbsp;function.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;GPIO1Function:&nbsp;enum&nbsp;code&nbsp;for&nbsp;GPIO&nbsp;pin&nbsp;1&nbsp;function.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-gpio1_write_function"><strong>gpio1_write_function</strong></a>(self, value: mcp2221.enums.GPIO1Function, mem: mcp2221.enums.MemoryType = None) -&gt; None</dt><dd><tt>Writes&nbsp;GPIO&nbsp;pin&nbsp;1&nbsp;function.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(GPIO1Function):&nbsp;enum&nbsp;code&nbsp;for&nbsp;GPIO&nbsp;pin&nbsp;1&nbsp;function.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-gpio2_read_function"><strong>gpio2_read_function</strong></a>(self, mem: mcp2221.enums.MemoryType = None) -&gt; mcp2221.enums.GPIO2Function</dt><dd><tt>Reads&nbsp;GPIO&nbsp;pin&nbsp;2&nbsp;function.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;GPIO2Function:&nbsp;enum&nbsp;code&nbsp;for&nbsp;GPIO&nbsp;pin&nbsp;2&nbsp;function.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-gpio2_write_function"><strong>gpio2_write_function</strong></a>(self, value: mcp2221.enums.GPIO2Function, mem: mcp2221.enums.MemoryType = None) -&gt; None</dt><dd><tt>Writes&nbsp;GPIO&nbsp;pin&nbsp;2&nbsp;function.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(GPIO2Function):&nbsp;enum&nbsp;code&nbsp;for&nbsp;GPIO&nbsp;pin&nbsp;2&nbsp;function.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-gpio3_read_function"><strong>gpio3_read_function</strong></a>(self, mem: mcp2221.enums.MemoryType = None) -&gt; mcp2221.enums.GPIO3Function</dt><dd><tt>Reads&nbsp;GPIO&nbsp;pin&nbsp;3&nbsp;function.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;GPIO3Function:&nbsp;enum&nbsp;code&nbsp;for&nbsp;GPIO&nbsp;pin&nbsp;3&nbsp;function.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-gpio3_write_function"><strong>gpio3_write_function</strong></a>(self, value: mcp2221.enums.GPIO3Function, mem: mcp2221.enums.MemoryType = None) -&gt; None</dt><dd><tt>Writes&nbsp;GPIO&nbsp;pin&nbsp;3&nbsp;function.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(GPIO3Function):&nbsp;enum&nbsp;code&nbsp;for&nbsp;GPIO&nbsp;pin&nbsp;3&nbsp;function.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-gpio_read_direction"><strong>gpio_read_direction</strong></a>(self, pin: int) -&gt; mcp2221.enums.GPIODirection</dt><dd><tt>Reads&nbsp;GPIO&nbsp;pin&nbsp;direction.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pin(int):&nbsp;GPIO&nbsp;pin&nbsp;index<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;GPIODirection:&nbsp;GPIO&nbsp;pin&nbsp;direction&nbsp;code.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-gpio_read_powerup_direction"><strong>gpio_read_powerup_direction</strong></a>(self, gpio_num: int) -&gt; mcp2221.enums.GPIODirection</dt><dd><tt>Reads&nbsp;GPIO&nbsp;pin&nbsp;power-up&nbsp;direction&nbsp;from&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;gpio_num(int):&nbsp;GPIO&nbsp;pin&nbsp;index<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;GPIODirection:&nbsp;pin&nbsp;power-up&nbsp;direction&nbsp;code.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-gpio_read_powerup_value"><strong>gpio_read_powerup_value</strong></a>(self, gpio_num: int) -&gt; bool</dt><dd><tt>Reads&nbsp;GPIO&nbsp;pin&nbsp;power-up&nbsp;value&nbsp;from&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;gpio_num(int):&nbsp;GPIO&nbsp;pin&nbsp;index<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;pin&nbsp;power-up&nbsp;value.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-gpio_read_value"><strong>gpio_read_value</strong></a>(self, pin: int) -&gt; bool</dt><dd><tt>Gets&nbsp;GPIO&nbsp;pin&nbsp;value.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pin(int):&nbsp;GPIO&nbsp;pin&nbsp;index<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;GPIO&nbsp;pin&nbsp;value.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-gpio_write_direction"><strong>gpio_write_direction</strong></a>(self, pin: int, mode: mcp2221.enums.GPIODirection) -&gt; None</dt><dd><tt>Writes&nbsp;GPIO&nbsp;pin&nbsp;direction.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pin(int):&nbsp;GPIO&nbsp;pin&nbsp;index<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mode(GPIODirection):&nbsp;GPIO&nbsp;pin&nbsp;direction&nbsp;code</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-gpio_write_powerup_direction"><strong>gpio_write_powerup_direction</strong></a>(self, gpio_num: int, value: mcp2221.enums.GPIODirection) -&gt; None</dt><dd><tt>Writes&nbsp;GPIO&nbsp;pin&nbsp;power-up&nbsp;direction&nbsp;to&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;gpio_num(int):&nbsp;GPIO&nbsp;pin&nbsp;index<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(GPIODirection):&nbsp;pin&nbsp;power-up&nbsp;direction&nbsp;code</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-gpio_write_powerup_value"><strong>gpio_write_powerup_value</strong></a>(self, gpio_num: int, value: bool) -&gt; None</dt><dd><tt>Writes&nbsp;GPIO&nbsp;pin&nbsp;power-up&nbsp;value&nbsp;to&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;gpio_num(int):&nbsp;GPIO&nbsp;pin&nbsp;index<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(bool):&nbsp;pin&nbsp;power-up&nbsp;value</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-gpio_write_value"><strong>gpio_write_value</strong></a>(self, pin: int, value: bool) -&gt; None</dt><dd><tt>Sets&nbsp;GPIO&nbsp;pin&nbsp;direction.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pin(int):&nbsp;GPIO&nbsp;pin&nbsp;index<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(bool):&nbsp;GPIO&nbsp;pin&nbsp;value</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-i2c_cancel_transfer"><strong>i2c_cancel_transfer</strong></a>(self) -&gt; mcp2221.enums.I2CCancelTransferResponse</dt><dd><tt>Cancel&nbsp;pending&nbsp;I2C&nbsp;transfer.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;I2CCancelTransferResponse:&nbsp;response&nbsp;code&nbsp;returned&nbsp;by&nbsp;device.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-i2c_has_pending_value"><strong>i2c_has_pending_value</strong></a>(self) -&gt; int</dt><dd><tt>Tells&nbsp;if&nbsp;I2C&nbsp;bus&nbsp;has&nbsp;pending&nbsp;data&nbsp;to&nbsp;be&nbsp;read.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;0&nbsp;for&nbsp;no,&nbsp;1&nbsp;for&nbsp;yes&nbsp;and&nbsp;2&nbsp;for&nbsp;irrelevant?.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-i2c_read_data"><strong>i2c_read_data</strong></a>(self, address: bytes, length: int, i2c_mode: mcp2221.enums.I2CMode = &lt;I2CMode.Start: 144&gt;) -&gt; bytearray</dt><dd><tt>Reads&nbsp;data&nbsp;from&nbsp;given&nbsp;I2C&nbsp;address.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;address(bytes):&nbsp;7-bit&nbsp;I2C&nbsp;slave&nbsp;address<br>
+&nbsp;&nbsp;&nbsp;&nbsp;length(int):&nbsp;amount&nbsp;of&nbsp;data&nbsp;to&nbsp;read<br>
+&nbsp;&nbsp;&nbsp;&nbsp;i2c_mode(I2CMode):&nbsp;enum&nbsp;code&nbsp;for&nbsp;I2C&nbsp;mode<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bytearray:&nbsp;data&nbsp;read&nbsp;from&nbsp;I2C&nbsp;slave.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-i2c_read_speed"><strong>i2c_read_speed</strong></a>(self) -&gt; mcp2221.enums.I2CSpeed</dt><dd><tt>Read&nbsp;configured&nbsp;I2C&nbsp;speed.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;I2CSpeed:&nbsp;enum&nbsp;code&nbsp;describing&nbsp;current&nbsp;I2C&nbsp;speed.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-i2c_write_data"><strong>i2c_write_data</strong></a>(self, address: bytes, data: str, i2c_mode: mcp2221.enums.I2CMode = &lt;I2CMode.Start: 144&gt;) -&gt; None</dt><dd><tt>Writes&nbsp;data&nbsp;to&nbsp;given&nbsp;I2C&nbsp;address.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;address(bytes):&nbsp;7-bit&nbsp;I2C&nbsp;slave&nbsp;address<br>
+&nbsp;&nbsp;&nbsp;&nbsp;data(str):&nbsp;data&nbsp;string<br>
+&nbsp;&nbsp;&nbsp;&nbsp;i2c_mode(I2CMode):&nbsp;enum&nbsp;code&nbsp;for&nbsp;I2C&nbsp;mode</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-i2c_write_speed"><strong>i2c_write_speed</strong></a>(self, speed: mcp2221.enums.I2CSpeed) -&gt; mcp2221.enums.I2CSetSpeedResponse</dt><dd><tt>Write&nbsp;I2C&nbsp;speed&nbsp;to&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;speed&nbsp;(I2CSpeed):&nbsp;enum&nbsp;code&nbsp;describing&nbsp;I2C&nbsp;speed<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;I2CSetSpeedResponse:&nbsp;response&nbsp;code&nbsp;returned&nbsp;by&nbsp;device.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-open"><strong>open</strong></a>(self, dev_descriptor: dict) -&gt; bool</dt><dd><tt>Opens&nbsp;device&nbsp;with&nbsp;given&nbsp;descriptor.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dev_descriptor(dict):&nbsp;the&nbsp;device&nbsp;descriptor&nbsp;to&nbsp;open&nbsp;device&nbsp;from.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use&nbsp;find_devices&nbsp;to&nbsp;obtain&nbsp;one.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;True&nbsp;if&nbsp;device&nbsp;could&nbsp;be&nbsp;opened,&nbsp;False&nbsp;otherwise.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_adc"><strong>read_adc</strong></a>(self, idx: int) -&gt; int</dt><dd><tt>Reads&nbsp;ADC&nbsp;value.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;idx(int):&nbsp;ADC&nbsp;index<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;InvalidParameterException:&nbsp;if&nbsp;ADC&nbsp;index&nbsp;is&nbsp;below&nbsp;0&nbsp;or&nbsp;above&nbsp;2<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;ADC&nbsp;value.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_adc_reference_source"><strong>read_adc_reference_source</strong></a>(self, mem: mcp2221.enums.MemoryType = None) -&gt; mcp2221.enums.ReferenceVoltageSource</dt><dd><tt>Reads&nbsp;ADC&nbsp;reference&nbsp;flag.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ReferenceVoltageSource:&nbsp;enum&nbsp;code&nbsp;for&nbsp;reference&nbsp;voltage&nbsp;source.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_adc_reference_voltage"><strong>read_adc_reference_voltage</strong></a>(self, mem: mcp2221.enums.MemoryType = None) -&gt; mcp2221.enums.ReferenceVoltageValue</dt><dd><tt>Reads&nbsp;ADC&nbsp;reference&nbsp;voltage&nbsp;settings.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ReferenceVoltageValue:&nbsp;enum&nbsp;code&nbsp;for&nbsp;reference&nbsp;voltage&nbsp;settings.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_cdc_sn_enumeration_enable"><strong>read_cdc_sn_enumeration_enable</strong></a>(self) -&gt; bool</dt><dd><tt>Reads&nbsp;CDC&nbsp;serial&nbsp;number&nbsp;enumeration&nbsp;enable&nbsp;bit&nbsp;from&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;value&nbsp;of&nbsp;CDC&nbsp;serial&nbsp;number&nbsp;enumeration&nbsp;enable&nbsp;bit.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_chip_factory_serial_number"><strong>read_chip_factory_serial_number</strong></a>(self) -&gt; str</dt><dd><tt>Reads&nbsp;chip&nbsp;factory&nbsp;serial&nbsp;number&nbsp;from&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;str:&nbsp;USB&nbsp;chip&nbsp;factory&nbsp;serial&nbsp;number.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_clock_output_duty_cycle"><strong>read_clock_output_duty_cycle</strong></a>(self, mem: mcp2221.enums.MemoryType = None) -&gt; mcp2221.enums.ClockDutyCycle</dt><dd><tt>Reads&nbsp;clock&nbsp;output&nbsp;duty&nbsp;cycle.&nbsp;This&nbsp;is&nbsp;the&nbsp;duty&nbsp;cycle&nbsp;of&nbsp;clock&nbsp;output<br>
+signal&nbsp;if&nbsp;directed&nbsp;to&nbsp;GPIO&nbsp;pin&nbsp;1.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;memory&nbsp;to&nbsp;read&nbsp;from&nbsp;(default&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ClockDutyCycle:&nbsp;enum&nbsp;code&nbsp;for&nbsp;clock&nbsp;duty&nbsp;cycle.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_clock_output_frequency"><strong>read_clock_output_frequency</strong></a>(self, mem: mcp2221.enums.MemoryType = None) -&gt; mcp2221.enums.ClockFrequency</dt><dd><tt>Reads&nbsp;clock&nbsp;output&nbsp;frequency.&nbsp;This&nbsp;is&nbsp;the&nbsp;frequency&nbsp;of&nbsp;clock&nbsp;output<br>
+signal&nbsp;if&nbsp;directed&nbsp;to&nbsp;GPIO&nbsp;pin&nbsp;1.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;memory&nbsp;to&nbsp;read&nbsp;from&nbsp;(default&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ClockFrequency:&nbsp;enum&nbsp;code&nbsp;for&nbsp;clock&nbsp;output&nbsp;frequency.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_dac_powerup_value"><strong>read_dac_powerup_value</strong></a>(self) -&gt; int</dt><dd><tt>Reads&nbsp;DAC&nbsp;power-up&nbsp;value&nbsp;from&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;DAC&nbsp;power-up&nbsp;value.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_dac_reference_source"><strong>read_dac_reference_source</strong></a>(self, mem: mcp2221.enums.MemoryType = None) -&gt; mcp2221.enums.ReferenceVoltageSource</dt><dd><tt>Reads&nbsp;DAC&nbsp;reference&nbsp;flag.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ReferenceVoltageSource:&nbsp;enum&nbsp;code&nbsp;for&nbsp;reference&nbsp;voltage&nbsp;source.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_dac_reference_voltage"><strong>read_dac_reference_voltage</strong></a>(self, mem: mcp2221.enums.MemoryType = None) -&gt; mcp2221.enums.ReferenceVoltageValue</dt><dd><tt>Reads&nbsp;DAC&nbsp;reference&nbsp;voltage&nbsp;settings.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ReferenceVoltageValue:&nbsp;enum&nbsp;code&nbsp;for&nbsp;reference&nbsp;voltage&nbsp;settings.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_firmware_version"><strong>read_firmware_version</strong></a>(self) -&gt; str</dt><dd><tt>Reads&nbsp;chip&nbsp;firmware&nbsp;version.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;str:&nbsp;chip&nbsp;firmware&nbsp;version&nbsp;string.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_interrupt_flag"><strong>read_interrupt_flag</strong></a>(self) -&gt; bool</dt><dd><tt>Reads&nbsp;flag&nbsp;telling&nbsp;whether&nbsp;an&nbsp;interrupt&nbsp;occurred.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;if&nbsp;True,&nbsp;an&nbsp;interrupt&nbsp;has&nbsp;occurred.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_interrupt_on_falling_edge"><strong>read_interrupt_on_falling_edge</strong></a>(self, mem: mcp2221.enums.MemoryType = None) -&gt; bool</dt><dd><tt>Reads&nbsp;interrupt&nbsp;on&nbsp;falling&nbsp;edge&nbsp;flag.&nbsp;This&nbsp;tells&nbsp;the&nbsp;state&nbsp;of&nbsp;interrupt<br>
+detection&nbsp;on&nbsp;falling&nbsp;edge.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;value&nbsp;of&nbsp;interrupt&nbsp;on&nbsp;falling&nbsp;edge&nbsp;flag&nbsp;(True&nbsp;=&nbsp;active).</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_interrupt_on_rising_edge"><strong>read_interrupt_on_rising_edge</strong></a>(self, mem: mcp2221.enums.MemoryType = None) -&gt; bool</dt><dd><tt>Reads&nbsp;interrupt&nbsp;on&nbsp;rising&nbsp;edge&nbsp;flag.&nbsp;This&nbsp;tells&nbsp;the&nbsp;state&nbsp;of&nbsp;interrupt<br>
+detection&nbsp;on&nbsp;rising&nbsp;edge.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;value&nbsp;of&nbsp;interrupt&nbsp;on&nbsp;rising&nbsp;edge&nbsp;flag&nbsp;(True&nbsp;=&nbsp;active).</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_led_idle_i2c_level"><strong>read_led_idle_i2c_level</strong></a>(self) -&gt; bool</dt><dd><tt>Reads&nbsp;idle&nbsp;level&nbsp;for&nbsp;I2C&nbsp;LED&nbsp;signal.&nbsp;This&nbsp;is&nbsp;the&nbsp;value&nbsp;given<br>
+to&nbsp;the&nbsp;I2C&nbsp;LED&nbsp;signal&nbsp;when&nbsp;no&nbsp;I2C&nbsp;transfer&nbsp;is&nbsp;ongoing.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;value&nbsp;of&nbsp;I2C&nbsp;LED&nbsp;idle&nbsp;signal&nbsp;level.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_led_idle_uart_rx_level"><strong>read_led_idle_uart_rx_level</strong></a>(self) -&gt; bool</dt><dd><tt>Reads&nbsp;idle&nbsp;level&nbsp;for&nbsp;UART&nbsp;RX&nbsp;LED&nbsp;signal.&nbsp;This&nbsp;is&nbsp;the&nbsp;value&nbsp;given<br>
+to&nbsp;the&nbsp;UART&nbsp;RX&nbsp;LED&nbsp;signal&nbsp;when&nbsp;no&nbsp;RX&nbsp;transfer&nbsp;is&nbsp;ongoing.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;value&nbsp;of&nbsp;UART&nbsp;RX&nbsp;LED&nbsp;idle&nbsp;signal&nbsp;level.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_led_idle_uart_tx_level"><strong>read_led_idle_uart_tx_level</strong></a>(self) -&gt; bool</dt><dd><tt>Reads&nbsp;idle&nbsp;level&nbsp;for&nbsp;UART&nbsp;TX&nbsp;LED&nbsp;signal.&nbsp;This&nbsp;is&nbsp;the&nbsp;value&nbsp;given<br>
+to&nbsp;the&nbsp;UART&nbsp;TX&nbsp;LED&nbsp;signal&nbsp;when&nbsp;no&nbsp;TX&nbsp;transfer&nbsp;is&nbsp;ongoing.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;value&nbsp;of&nbsp;UART&nbsp;TX&nbsp;LED&nbsp;idle&nbsp;signal&nbsp;level.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_security_option"><strong>read_security_option</strong></a>(self) -&gt; mcp2221.enums.SecurityOption</dt><dd><tt>Reads&nbsp;chip&nbsp;security&nbsp;option.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;SecurityOption:&nbsp;enum&nbsp;code&nbsp;for&nbsp;security&nbsp;option.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_suspend_mode_logic_level"><strong>read_suspend_mode_logic_level</strong></a>(self) -&gt; bool</dt><dd><tt>Reads&nbsp;pin&nbsp;level&nbsp;for&nbsp;suspend&nbsp;mode&nbsp;signal.&nbsp;This&nbsp;is&nbsp;the&nbsp;value&nbsp;given<br>
+to&nbsp;the&nbsp;suspend&nbsp;mode&nbsp;signal&nbsp;when&nbsp;chip&nbsp;is&nbsp;NOT&nbsp;in&nbsp;suspend&nbsp;mode.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;value&nbsp;of&nbsp;suspend&nbsp;mode&nbsp;signal&nbsp;level.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_usb_configured_logic_level"><strong>read_usb_configured_logic_level</strong></a>(self) -&gt; bool</dt><dd><tt>Reads&nbsp;level&nbsp;for&nbsp;'USB&nbsp;configured'&nbsp;signal.&nbsp;This&nbsp;is&nbsp;the&nbsp;value&nbsp;given<br>
+when&nbsp;USB&nbsp;enumeration&nbsp;is&nbsp;complete.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;level&nbsp;of&nbsp;'USB&nbsp;configured'&nbsp;signal.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_usb_current"><strong>read_usb_current</strong></a>(self) -&gt; int</dt><dd><tt>Reads&nbsp;USB&nbsp;current&nbsp;value&nbsp;for&nbsp;enumeration&nbsp;phase,&nbsp;in&nbsp;mA.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;value&nbsp;of&nbsp;USB&nbsp;current&nbsp;in&nbsp;enumeration&nbsp;phase,&nbsp;in&nbsp;mA.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_usb_manufacturer_descriptor"><strong>read_usb_manufacturer_descriptor</strong></a>(self) -&gt; str</dt><dd><tt>Reads&nbsp;USB&nbsp;manufacturer&nbsp;descriptor&nbsp;from&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;str:&nbsp;USB&nbsp;manufacturer&nbsp;descriptor&nbsp;string.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_usb_pid"><strong>read_usb_pid</strong></a>(self) -&gt; int</dt><dd><tt>Reads&nbsp;USB&nbsp;product&nbsp;ID&nbsp;from&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;USB&nbsp;product&nbsp;ID.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_usb_product_descriptor"><strong>read_usb_product_descriptor</strong></a>(self) -&gt; str</dt><dd><tt>Reads&nbsp;USB&nbsp;product&nbsp;descriptor&nbsp;from&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;str:&nbsp;USB&nbsp;product&nbsp;descriptor&nbsp;string.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_usb_remote_wake_up_attribute"><strong>read_usb_remote_wake_up_attribute</strong></a>(self) -&gt; bool</dt><dd><tt>Reads&nbsp;'USB&nbsp;remote&nbsp;wake-up'&nbsp;attribute.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;value&nbsp;of&nbsp;'USB&nbsp;remote&nbsp;wake-up'&nbsp;attribute.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_usb_self_powered_attribute"><strong>read_usb_self_powered_attribute</strong></a>(self) -&gt; bool</dt><dd><tt>Reads&nbsp;'USB&nbsp;self-powered'&nbsp;attribute.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;value&nbsp;of&nbsp;'USB&nbsp;self-powered'&nbsp;attribute.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_usb_serial_number_descriptor"><strong>read_usb_serial_number_descriptor</strong></a>(self) -&gt; str</dt><dd><tt>Reads&nbsp;USB&nbsp;serial&nbsp;number&nbsp;descriptor&nbsp;from&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;str:&nbsp;USB&nbsp;serial&nbsp;number&nbsp;descriptor&nbsp;string.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-read_usb_vid"><strong>read_usb_vid</strong></a>(self) -&gt; int</dt><dd><tt>Reads&nbsp;USB&nbsp;vendor&nbsp;ID&nbsp;from&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;USB&nbsp;vendor&nbsp;ID.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-reset_chip"><strong>reset_chip</strong></a>(self) -&gt; None</dt><dd><tt>Resets&nbsp;chip.</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-set_default_memory_target"><strong>set_default_memory_target</strong></a>(self, mem: mcp2221.enums.MemoryType) -&gt; None</dt><dd><tt>Sets&nbsp;default&nbsp;memory&nbsp;target.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-unlock"><strong>unlock</strong></a>(self, value: str) -&gt; None</dt><dd><tt>Tries&nbsp;to&nbsp;unlock&nbsp;flash&nbsp;memory&nbsp;with&nbsp;given&nbsp;password.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(str):&nbsp;password&nbsp;string&nbsp;(max.&nbsp;8&nbsp;characters)</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_adc_reference_source"><strong>write_adc_reference_source</strong></a>(self, value: mcp2221.enums.ReferenceVoltageSource, mem: mcp2221.enums.MemoryType = None) -&gt; None</dt><dd><tt>Writes&nbsp;ADC&nbsp;reference&nbsp;flag.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(ReferenceVoltageSource):&nbsp;enum&nbsp;code&nbsp;for&nbsp;reference&nbsp;voltage&nbsp;source<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_adc_reference_voltage"><strong>write_adc_reference_voltage</strong></a>(self, value: mcp2221.enums.ReferenceVoltageValue, mem: mcp2221.enums.MemoryType = None) -&gt; None</dt><dd><tt>Writes&nbsp;ADC&nbsp;reference&nbsp;voltage&nbsp;settings.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ReferenceVoltageValue:&nbsp;enum&nbsp;code&nbsp;for&nbsp;reference&nbsp;voltage&nbsp;settings</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_cdc_sn_enumeration_enable"><strong>write_cdc_sn_enumeration_enable</strong></a>(self, value: bool) -&gt; None</dt><dd><tt>Writes&nbsp;CDC&nbsp;serial&nbsp;number&nbsp;enumeration&nbsp;enable&nbsp;bit&nbsp;to&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(bool):&nbsp;value&nbsp;to&nbsp;set</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_chip_factory_serial_number"><strong>write_chip_factory_serial_number</strong></a>(self, value: str) -&gt; None</dt><dd><tt>Writes&nbsp;chip&nbsp;factory&nbsp;serial&nbsp;number&nbsp;to&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(str):&nbsp;chip&nbsp;factory&nbsp;serial&nbsp;number</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_clock_output_duty_cycle"><strong>write_clock_output_duty_cycle</strong></a>(self, value: mcp2221.enums.ClockDutyCycle, mem: mcp2221.enums.MemoryType = None) -&gt; None</dt><dd><tt>Writes&nbsp;clock&nbsp;output&nbsp;duty&nbsp;cycle.&nbsp;This&nbsp;is&nbsp;the&nbsp;duty&nbsp;cycle&nbsp;of&nbsp;clock&nbsp;output<br>
+signal&nbsp;if&nbsp;directed&nbsp;to&nbsp;GPIO&nbsp;pin&nbsp;1.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(ClockDutyCycle):&nbsp;enum&nbsp;code&nbsp;for&nbsp;clock&nbsp;duty&nbsp;cycle<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;memory&nbsp;to&nbsp;write&nbsp;to&nbsp;(default&nbsp;SRAM)</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_clock_output_frequency"><strong>write_clock_output_frequency</strong></a>(self, value: mcp2221.enums.ClockFrequency, mem: mcp2221.enums.MemoryType = None) -&gt; None</dt><dd><tt>Writes&nbsp;clock&nbsp;output&nbsp;frequency.&nbsp;This&nbsp;is&nbsp;the&nbsp;frequency&nbsp;of&nbsp;clock&nbsp;output<br>
+signal&nbsp;if&nbsp;directed&nbsp;to&nbsp;GPIO&nbsp;pin&nbsp;1.&nbsp;It&nbsp;doesn't&nbsp;change&nbsp;internal&nbsp;clock&nbsp;frequency.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(ClockFrequency):&nbsp;enum&nbsp;code&nbsp;for&nbsp;clock&nbsp;output&nbsp;frequency<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;memory&nbsp;to&nbsp;write&nbsp;to&nbsp;(default&nbsp;SRAM)</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_dac"><strong>write_dac</strong></a>(self, value: int) -&gt; None</dt><dd><tt>Writes&nbsp;DAC&nbsp;value.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(int):&nbsp;DAC&nbsp;value&nbsp;(5&nbsp;bit)</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_dac_powerup_value"><strong>write_dac_powerup_value</strong></a>(self, value: int) -&gt; None</dt><dd><tt>Writes&nbsp;DAC&nbsp;power-up&nbsp;value&nbsp;to&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(int):&nbsp;DAC&nbsp;power-up&nbsp;value</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_dac_reference_source"><strong>write_dac_reference_source</strong></a>(self, value: mcp2221.enums.ReferenceVoltageSource, mem: mcp2221.enums.MemoryType = None) -&gt; None</dt><dd><tt>Writes&nbsp;DAC&nbsp;reference&nbsp;flag.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(ReferenceVoltageSource):&nbsp;enum&nbsp;code&nbsp;for&nbsp;reference&nbsp;voltage&nbsp;source<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_dac_reference_voltage"><strong>write_dac_reference_voltage</strong></a>(self, value: mcp2221.enums.ReferenceVoltageValue, mem: mcp2221.enums.MemoryType = None) -&gt; None</dt><dd><tt>Writes&nbsp;DAC&nbsp;reference&nbsp;voltage&nbsp;settings.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ReferenceVoltageValue:&nbsp;enum&nbsp;code&nbsp;for&nbsp;reference&nbsp;voltage&nbsp;settings</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_flash_access_password"><strong>write_flash_access_password</strong></a>(self, value: str) -&gt; None</dt><dd><tt>Writes&nbsp;flash&nbsp;memory&nbsp;access&nbsp;password.&nbsp;To&nbsp;activate&nbsp;password&nbsp;protection,<br>
+set&nbsp;security&nbsp;option&nbsp;to&nbsp;SecurityOption.PasswordProtected.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(str):&nbsp;password&nbsp;string&nbsp;(max.&nbsp;8&nbsp;characters)</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_interrupt_on_falling_edge"><strong>write_interrupt_on_falling_edge</strong></a>(self, value: bool, mem: mcp2221.enums.MemoryType = None) -&gt; None</dt><dd><tt>Writes&nbsp;interrupt&nbsp;on&nbsp;falling&nbsp;edge&nbsp;flag.&nbsp;This&nbsp;sets&nbsp;the&nbsp;state&nbsp;of&nbsp;interrupt<br>
+detection&nbsp;on&nbsp;falling&nbsp;edge.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(bool):&nbsp;value&nbsp;of&nbsp;interrupt&nbsp;on&nbsp;falling&nbsp;edge&nbsp;flag&nbsp;(True&nbsp;=&nbsp;active)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_interrupt_on_rising_edge"><strong>write_interrupt_on_rising_edge</strong></a>(self, value: bool, mem: mcp2221.enums.MemoryType = None) -&gt; None</dt><dd><tt>Writes&nbsp;interrupt&nbsp;on&nbsp;rising&nbsp;edge&nbsp;flag.&nbsp;This&nbsp;sets&nbsp;the&nbsp;state&nbsp;of&nbsp;interrupt<br>
+detection&nbsp;on&nbsp;rising&nbsp;edge.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(bool):&nbsp;value&nbsp;of&nbsp;interrupt&nbsp;on&nbsp;rising&nbsp;edge&nbsp;flag&nbsp;(True&nbsp;=&nbsp;active)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_led_idle_i2c_level"><strong>write_led_idle_i2c_level</strong></a>(self, value: bool) -&gt; None</dt><dd><tt>Writes&nbsp;idle&nbsp;level&nbsp;for&nbsp;I2C&nbsp;LED&nbsp;signal.&nbsp;This&nbsp;is&nbsp;the&nbsp;value&nbsp;given<br>
+to&nbsp;the&nbsp;I2C&nbsp;LED&nbsp;signal&nbsp;when&nbsp;no&nbsp;I2C&nbsp;transfer&nbsp;is&nbsp;ongoing.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(bool):&nbsp;value&nbsp;of&nbsp;I2C&nbsp;LED&nbsp;idle&nbsp;signal&nbsp;level</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_led_idle_uart_rx_level"><strong>write_led_idle_uart_rx_level</strong></a>(self, value: bool) -&gt; None</dt><dd><tt>Writes&nbsp;idle&nbsp;level&nbsp;for&nbsp;UART&nbsp;RX&nbsp;LED&nbsp;signal.&nbsp;This&nbsp;is&nbsp;the&nbsp;value&nbsp;given<br>
+to&nbsp;the&nbsp;UART&nbsp;RX&nbsp;LED&nbsp;signal&nbsp;when&nbsp;no&nbsp;RX&nbsp;transfer&nbsp;is&nbsp;ongoing.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(bool):&nbsp;value&nbsp;of&nbsp;UART&nbsp;RX&nbsp;LED&nbsp;idle&nbsp;signal&nbsp;level</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_led_idle_uart_tx_level"><strong>write_led_idle_uart_tx_level</strong></a>(self, value: bool) -&gt; None</dt><dd><tt>Writes&nbsp;idle&nbsp;level&nbsp;for&nbsp;UART&nbsp;TX&nbsp;LED&nbsp;signal.&nbsp;This&nbsp;is&nbsp;the&nbsp;value&nbsp;given<br>
+to&nbsp;the&nbsp;UART&nbsp;TX&nbsp;LED&nbsp;signal&nbsp;when&nbsp;no&nbsp;TX&nbsp;transfer&nbsp;is&nbsp;ongoing.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(bool):&nbsp;value&nbsp;of&nbsp;UART&nbsp;TX&nbsp;LED&nbsp;idle&nbsp;signal&nbsp;level</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_security_option"><strong>write_security_option</strong></a>(self, value: mcp2221.enums.SecurityOption) -&gt; None</dt><dd><tt>Writes&nbsp;chip&nbsp;security&nbsp;option.<br>
+!!!WARNING!!!&nbsp;If&nbsp;you&nbsp;choose&nbsp;SecurityOption.PermanentlyLocked,<br>
+it&nbsp;will&nbsp;make&nbsp;your&nbsp;chip&nbsp;permanently&nbsp;read-only.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(SecurityOption):&nbsp;enum&nbsp;code&nbsp;for&nbsp;security&nbsp;option</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_suspend_mode_logic_level"><strong>write_suspend_mode_logic_level</strong></a>(self, value: bool) -&gt; None</dt><dd><tt>Writes&nbsp;pin&nbsp;level&nbsp;for&nbsp;suspend&nbsp;mode&nbsp;signal.&nbsp;This&nbsp;is&nbsp;the&nbsp;value&nbsp;given<br>
+&nbsp;&nbsp;&nbsp;to&nbsp;the&nbsp;suspend&nbsp;mode&nbsp;signal&nbsp;when&nbsp;chip&nbsp;is&nbsp;NOT&nbsp;in&nbsp;suspend&nbsp;mode.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(bool):&nbsp;value&nbsp;of&nbsp;suspend&nbsp;mode&nbsp;signal&nbsp;level</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_usb_configured_logic_level"><strong>write_usb_configured_logic_level</strong></a>(self, value: bool) -&gt; None</dt><dd><tt>Writes&nbsp;level&nbsp;for&nbsp;'USB&nbsp;configured'&nbsp;signal.&nbsp;This&nbsp;is&nbsp;the&nbsp;value&nbsp;given<br>
+when&nbsp;USB&nbsp;enumeration&nbsp;is&nbsp;complete.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(bool):&nbsp;level&nbsp;of&nbsp;'USB&nbsp;configured'&nbsp;signal</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_usb_current"><strong>write_usb_current</strong></a>(self, value: int) -&gt; None</dt><dd><tt>Writes&nbsp;USB&nbsp;current&nbsp;value&nbsp;for&nbsp;enumeration&nbsp;phase,&nbsp;in&nbsp;mA.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(int):&nbsp;value&nbsp;of&nbsp;USB&nbsp;current&nbsp;in&nbsp;enumeration&nbsp;phase,&nbsp;in&nbsp;mA</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_usb_manufacturer_descriptor"><strong>write_usb_manufacturer_descriptor</strong></a>(self, value: str) -&gt; None</dt><dd><tt>Writes&nbsp;USB&nbsp;manufacturer&nbsp;descriptor&nbsp;to&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(str):&nbsp;USB&nbsp;manufacturer&nbsp;descriptor&nbsp;string</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_usb_pid"><strong>write_usb_pid</strong></a>(self, value: int) -&gt; None</dt><dd><tt>Writes&nbsp;USB&nbsp;product&nbsp;ID&nbsp;to&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(int):&nbsp;USB&nbsp;product&nbsp;ID</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_usb_product_descriptor"><strong>write_usb_product_descriptor</strong></a>(self, value: str) -&gt; None</dt><dd><tt>Writes&nbsp;USB&nbsp;product&nbsp;descriptor&nbsp;to&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(str):&nbsp;USB&nbsp;product&nbsp;descriptor&nbsp;string</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_usb_remote_wake_up_attribute"><strong>write_usb_remote_wake_up_attribute</strong></a>(self, value: bool) -&gt; None</dt><dd><tt>Writes&nbsp;'USB&nbsp;remote&nbsp;wake-up'&nbsp;attribute.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(bool):&nbsp;value&nbsp;of&nbsp;'USB&nbsp;remote&nbsp;wake-up'&nbsp;attribute</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_usb_self_powered_attribute"><strong>write_usb_self_powered_attribute</strong></a>(self, value: bool) -&gt; None</dt><dd><tt>Writes&nbsp;'USB&nbsp;self-powered'&nbsp;attribute.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(bool):&nbsp;value&nbsp;of&nbsp;'USB&nbsp;self-powered'&nbsp;attribute</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_usb_serial_number_descriptor"><strong>write_usb_serial_number_descriptor</strong></a>(self, value: str) -&gt; None</dt><dd><tt>Writes&nbsp;USB&nbsp;serial&nbsp;number&nbsp;descriptor&nbsp;to&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(str):&nbsp;USB&nbsp;serial&nbsp;number&nbsp;descriptor&nbsp;string</tt></dd></dl>
+
+<dl><dt><a name="MCP2221-write_usb_vid"><strong>write_usb_vid</strong></a>(self, value: int) -&gt; None</dt><dd><tt>Writes&nbsp;USB&nbsp;vendor&nbsp;ID&nbsp;to&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value(int):&nbsp;USB&nbsp;vendor&nbsp;ID</tt></dd></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>adc0_value</strong></dt>
+</dl>
+<dl><dt><strong>adc1_value</strong></dt>
+</dl>
+<dl><dt><strong>adc2_value</strong></dt>
+</dl>
+<dl><dt><strong>firmware_version</strong></dt>
+<dd><tt>Reads&nbsp;chip&nbsp;firmware&nbsp;version.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;str:&nbsp;chip&nbsp;firmware&nbsp;version&nbsp;string.</tt></dd>
+</dl>
+<dl><dt><strong>i2c_already_transferred_length</strong></dt>
+<dd><tt>Reads&nbsp;the&nbsp;number&nbsp;of&nbsp;bytes&nbsp;that&nbsp;have&nbsp;already&nbsp;been&nbsp;transferred<br>
+in&nbsp;the&nbsp;current&nbsp;I2C&nbsp;command.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;amount&nbsp;of&nbsp;already&nbsp;transferred&nbsp;I2C&nbsp;bytes.</tt></dd>
+</dl>
+<dl><dt><strong>i2c_internal_buffer_counter</strong></dt>
+<dd><tt>Reads&nbsp;the&nbsp;value&nbsp;of&nbsp;the&nbsp;I2C&nbsp;internal&nbsp;buffer&nbsp;counter.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;value&nbsp;of&nbsp;internal&nbsp;I2C&nbsp;buffer&nbsp;counter.</tt></dd>
+</dl>
+<dl><dt><strong>i2c_requested_transfer_length</strong></dt>
+<dd><tt>Reads&nbsp;the&nbsp;number&nbsp;of&nbsp;bytes&nbsp;requested&nbsp;in&nbsp;the&nbsp;current&nbsp;I2C&nbsp;command.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;requested&nbsp;I2C&nbsp;transfer&nbsp;length.</tt></dd>
+</dl>
+<dl><dt><strong>i2c_scl_state</strong></dt>
+<dd><tt>Reads&nbsp;the&nbsp;I2C&nbsp;clock&nbsp;(SCL)&nbsp;line&nbsp;state.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;I2C&nbsp;clock&nbsp;line&nbsp;state.</tt></dd>
+</dl>
+<dl><dt><strong>i2c_sda_state</strong></dt>
+<dd><tt>Reads&nbsp;the&nbsp;I2C&nbsp;data&nbsp;(SDA)&nbsp;line&nbsp;state.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;I2C&nbsp;data&nbsp;line&nbsp;state.</tt></dd>
+</dl>
+<dl><dt><strong>i2c_slave_address</strong></dt>
+<dd><tt>Reads&nbsp;the&nbsp;I2C&nbsp;slave&nbsp;address&nbsp;being&nbsp;used.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;I2C&nbsp;slave&nbsp;address&nbsp;being&nbsp;used.</tt></dd>
+</dl>
+<dl><dt><strong>interrupt_flag</strong></dt>
+<dd><tt>Reads&nbsp;flag&nbsp;telling&nbsp;whether&nbsp;an&nbsp;interrupt&nbsp;occurred.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;if&nbsp;True,&nbsp;an&nbsp;interrupt&nbsp;has&nbsp;occurred.</tt></dd>
+</dl>
+<dl><dt><strong>opened</strong></dt>
+<dd><tt>Tells&nbsp;if&nbsp;a&nbsp;device&nbsp;associated&nbsp;with&nbsp;this&nbsp;instance<br>
+is&nbsp;currently&nbsp;opened.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;True&nbsp;if&nbsp;a&nbsp;device&nbsp;is&nbsp;opened,&nbsp;False&nbsp;otherwise.</tt></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>adc_reference_source</strong></dt>
+<dd><tt>Reads&nbsp;ADC&nbsp;reference&nbsp;flag.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ReferenceVoltageSource:&nbsp;enum&nbsp;code&nbsp;for&nbsp;reference&nbsp;voltage&nbsp;source.</tt></dd>
+</dl>
+<dl><dt><strong>adc_reference_voltage</strong></dt>
+<dd><tt>Reads&nbsp;ADC&nbsp;reference&nbsp;voltage&nbsp;settings.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ReferenceVoltageValue:&nbsp;enum&nbsp;code&nbsp;for&nbsp;reference&nbsp;voltage&nbsp;settings.</tt></dd>
+</dl>
+<dl><dt><strong>cdc_sn_enumeration_enable_flag</strong></dt>
+<dd><tt>Reads&nbsp;CDC&nbsp;serial&nbsp;number&nbsp;enumeration&nbsp;enable&nbsp;bit&nbsp;from&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;value&nbsp;of&nbsp;CDC&nbsp;serial&nbsp;number&nbsp;enumeration&nbsp;enable&nbsp;bit.</tt></dd>
+</dl>
+<dl><dt><strong>chip_factory_serial_number</strong></dt>
+<dd><tt>Reads&nbsp;chip&nbsp;factory&nbsp;serial&nbsp;number&nbsp;from&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;str:&nbsp;USB&nbsp;chip&nbsp;factory&nbsp;serial&nbsp;number.</tt></dd>
+</dl>
+<dl><dt><strong>clock_output_duty_cycle</strong></dt>
+<dd><tt>Reads&nbsp;clock&nbsp;output&nbsp;duty&nbsp;cycle.&nbsp;This&nbsp;is&nbsp;the&nbsp;duty&nbsp;cycle&nbsp;of&nbsp;clock&nbsp;output<br>
+signal&nbsp;if&nbsp;directed&nbsp;to&nbsp;GPIO&nbsp;pin&nbsp;1.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;memory&nbsp;to&nbsp;read&nbsp;from&nbsp;(default&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ClockDutyCycle:&nbsp;enum&nbsp;code&nbsp;for&nbsp;clock&nbsp;duty&nbsp;cycle.</tt></dd>
+</dl>
+<dl><dt><strong>clock_output_frequency</strong></dt>
+<dd><tt>Reads&nbsp;clock&nbsp;output&nbsp;frequency.&nbsp;This&nbsp;is&nbsp;the&nbsp;frequency&nbsp;of&nbsp;clock&nbsp;output<br>
+signal&nbsp;if&nbsp;directed&nbsp;to&nbsp;GPIO&nbsp;pin&nbsp;1.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;memory&nbsp;to&nbsp;read&nbsp;from&nbsp;(default&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ClockFrequency:&nbsp;enum&nbsp;code&nbsp;for&nbsp;clock&nbsp;output&nbsp;frequency.</tt></dd>
+</dl>
+<dl><dt><strong>dac_powerup_value</strong></dt>
+<dd><tt>Reads&nbsp;DAC&nbsp;power-up&nbsp;value&nbsp;from&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;DAC&nbsp;power-up&nbsp;value.</tt></dd>
+</dl>
+<dl><dt><strong>dac_reference_source</strong></dt>
+<dd><tt>Reads&nbsp;DAC&nbsp;reference&nbsp;flag.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ReferenceVoltageSource:&nbsp;enum&nbsp;code&nbsp;for&nbsp;reference&nbsp;voltage&nbsp;source.</tt></dd>
+</dl>
+<dl><dt><strong>dac_reference_voltage</strong></dt>
+<dd><tt>Reads&nbsp;DAC&nbsp;reference&nbsp;voltage&nbsp;settings.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ReferenceVoltageValue:&nbsp;enum&nbsp;code&nbsp;for&nbsp;reference&nbsp;voltage&nbsp;settings.</tt></dd>
+</dl>
+<dl><dt><strong>dac_value</strong></dt>
+</dl>
+<dl><dt><strong>default_memory_target</strong></dt>
+<dd><tt>Gets&nbsp;default&nbsp;memory&nbsp;target.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;MemoryType:&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type.</tt></dd>
+</dl>
+<dl><dt><strong>gpio0_direction</strong></dt>
+</dl>
+<dl><dt><strong>gpio0_function</strong></dt>
+<dd><tt>Reads&nbsp;GPIO&nbsp;pin&nbsp;0&nbsp;function.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;GPIO0Function:&nbsp;enum&nbsp;code&nbsp;for&nbsp;GPIO&nbsp;pin&nbsp;0&nbsp;function.</tt></dd>
+</dl>
+<dl><dt><strong>gpio0_powerup_direction</strong></dt>
+</dl>
+<dl><dt><strong>gpio0_powerup_value</strong></dt>
+</dl>
+<dl><dt><strong>gpio0_value</strong></dt>
+</dl>
+<dl><dt><strong>gpio1_direction</strong></dt>
+</dl>
+<dl><dt><strong>gpio1_function</strong></dt>
+<dd><tt>Reads&nbsp;GPIO&nbsp;pin&nbsp;1&nbsp;function.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;GPIO1Function:&nbsp;enum&nbsp;code&nbsp;for&nbsp;GPIO&nbsp;pin&nbsp;1&nbsp;function.</tt></dd>
+</dl>
+<dl><dt><strong>gpio1_powerup_direction</strong></dt>
+</dl>
+<dl><dt><strong>gpio1_powerup_value</strong></dt>
+</dl>
+<dl><dt><strong>gpio1_value</strong></dt>
+</dl>
+<dl><dt><strong>gpio2_direction</strong></dt>
+</dl>
+<dl><dt><strong>gpio2_function</strong></dt>
+<dd><tt>Reads&nbsp;GPIO&nbsp;pin&nbsp;2&nbsp;function.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;GPIO2Function:&nbsp;enum&nbsp;code&nbsp;for&nbsp;GPIO&nbsp;pin&nbsp;2&nbsp;function.</tt></dd>
+</dl>
+<dl><dt><strong>gpio2_powerup_direction</strong></dt>
+</dl>
+<dl><dt><strong>gpio2_powerup_value</strong></dt>
+</dl>
+<dl><dt><strong>gpio2_value</strong></dt>
+</dl>
+<dl><dt><strong>gpio3_direction</strong></dt>
+</dl>
+<dl><dt><strong>gpio3_function</strong></dt>
+<dd><tt>Reads&nbsp;GPIO&nbsp;pin&nbsp;3&nbsp;function.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;GPIO3Function:&nbsp;enum&nbsp;code&nbsp;for&nbsp;GPIO&nbsp;pin&nbsp;3&nbsp;function.</tt></dd>
+</dl>
+<dl><dt><strong>gpio3_powerup_direction</strong></dt>
+</dl>
+<dl><dt><strong>gpio3_powerup_value</strong></dt>
+</dl>
+<dl><dt><strong>gpio3_value</strong></dt>
+</dl>
+<dl><dt><strong>i2c_speed</strong></dt>
+<dd><tt>Read&nbsp;configured&nbsp;I2C&nbsp;speed.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;I2CSpeed:&nbsp;enum&nbsp;code&nbsp;describing&nbsp;current&nbsp;I2C&nbsp;speed.</tt></dd>
+</dl>
+<dl><dt><strong>interrupt_on_falling_edge</strong></dt>
+<dd><tt>Reads&nbsp;interrupt&nbsp;on&nbsp;falling&nbsp;edge&nbsp;flag.&nbsp;This&nbsp;tells&nbsp;the&nbsp;state&nbsp;of&nbsp;interrupt<br>
+detection&nbsp;on&nbsp;falling&nbsp;edge.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;value&nbsp;of&nbsp;interrupt&nbsp;on&nbsp;falling&nbsp;edge&nbsp;flag&nbsp;(True&nbsp;=&nbsp;active).</tt></dd>
+</dl>
+<dl><dt><strong>interrupt_on_rising_edge</strong></dt>
+<dd><tt>Reads&nbsp;interrupt&nbsp;on&nbsp;rising&nbsp;edge&nbsp;flag.&nbsp;This&nbsp;tells&nbsp;the&nbsp;state&nbsp;of&nbsp;interrupt<br>
+detection&nbsp;on&nbsp;rising&nbsp;edge.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mem(MemoryType):&nbsp;enum&nbsp;code&nbsp;for&nbsp;memory&nbsp;type&nbsp;(flash&nbsp;or&nbsp;SRAM)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;value&nbsp;of&nbsp;interrupt&nbsp;on&nbsp;rising&nbsp;edge&nbsp;flag&nbsp;(True&nbsp;=&nbsp;active).</tt></dd>
+</dl>
+<dl><dt><strong>led_idle_i2c_level</strong></dt>
+<dd><tt>Reads&nbsp;idle&nbsp;level&nbsp;for&nbsp;I2C&nbsp;LED&nbsp;signal.&nbsp;This&nbsp;is&nbsp;the&nbsp;value&nbsp;given<br>
+to&nbsp;the&nbsp;I2C&nbsp;LED&nbsp;signal&nbsp;when&nbsp;no&nbsp;I2C&nbsp;transfer&nbsp;is&nbsp;ongoing.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;value&nbsp;of&nbsp;I2C&nbsp;LED&nbsp;idle&nbsp;signal&nbsp;level.</tt></dd>
+</dl>
+<dl><dt><strong>led_idle_uart_rx_level</strong></dt>
+<dd><tt>Reads&nbsp;idle&nbsp;level&nbsp;for&nbsp;UART&nbsp;RX&nbsp;LED&nbsp;signal.&nbsp;This&nbsp;is&nbsp;the&nbsp;value&nbsp;given<br>
+to&nbsp;the&nbsp;UART&nbsp;RX&nbsp;LED&nbsp;signal&nbsp;when&nbsp;no&nbsp;RX&nbsp;transfer&nbsp;is&nbsp;ongoing.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;value&nbsp;of&nbsp;UART&nbsp;RX&nbsp;LED&nbsp;idle&nbsp;signal&nbsp;level.</tt></dd>
+</dl>
+<dl><dt><strong>led_idle_uart_tx_level</strong></dt>
+<dd><tt>Reads&nbsp;idle&nbsp;level&nbsp;for&nbsp;UART&nbsp;TX&nbsp;LED&nbsp;signal.&nbsp;This&nbsp;is&nbsp;the&nbsp;value&nbsp;given<br>
+to&nbsp;the&nbsp;UART&nbsp;TX&nbsp;LED&nbsp;signal&nbsp;when&nbsp;no&nbsp;TX&nbsp;transfer&nbsp;is&nbsp;ongoing.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;value&nbsp;of&nbsp;UART&nbsp;TX&nbsp;LED&nbsp;idle&nbsp;signal&nbsp;level.</tt></dd>
+</dl>
+<dl><dt><strong>password</strong></dt>
+</dl>
+<dl><dt><strong>security_option</strong></dt>
+<dd><tt>Reads&nbsp;chip&nbsp;security&nbsp;option.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;SecurityOption:&nbsp;enum&nbsp;code&nbsp;for&nbsp;security&nbsp;option.</tt></dd>
+</dl>
+<dl><dt><strong>suspend_mode_logic_level</strong></dt>
+<dd><tt>Reads&nbsp;pin&nbsp;level&nbsp;for&nbsp;suspend&nbsp;mode&nbsp;signal.&nbsp;This&nbsp;is&nbsp;the&nbsp;value&nbsp;given<br>
+to&nbsp;the&nbsp;suspend&nbsp;mode&nbsp;signal&nbsp;when&nbsp;chip&nbsp;is&nbsp;NOT&nbsp;in&nbsp;suspend&nbsp;mode.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;value&nbsp;of&nbsp;suspend&nbsp;mode&nbsp;signal&nbsp;level.</tt></dd>
+</dl>
+<dl><dt><strong>usb_configured_logic_level</strong></dt>
+<dd><tt>Reads&nbsp;level&nbsp;for&nbsp;'USB&nbsp;configured'&nbsp;signal.&nbsp;This&nbsp;is&nbsp;the&nbsp;value&nbsp;given<br>
+when&nbsp;USB&nbsp;enumeration&nbsp;is&nbsp;complete.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;level&nbsp;of&nbsp;'USB&nbsp;configured'&nbsp;signal.</tt></dd>
+</dl>
+<dl><dt><strong>usb_current</strong></dt>
+<dd><tt>Reads&nbsp;USB&nbsp;current&nbsp;value&nbsp;for&nbsp;enumeration&nbsp;phase,&nbsp;in&nbsp;mA.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;value&nbsp;of&nbsp;USB&nbsp;current&nbsp;in&nbsp;enumeration&nbsp;phase,&nbsp;in&nbsp;mA.</tt></dd>
+</dl>
+<dl><dt><strong>usb_manufacturer_descriptor</strong></dt>
+<dd><tt>Reads&nbsp;USB&nbsp;manufacturer&nbsp;descriptor&nbsp;from&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;str:&nbsp;USB&nbsp;manufacturer&nbsp;descriptor&nbsp;string.</tt></dd>
+</dl>
+<dl><dt><strong>usb_pid</strong></dt>
+<dd><tt>Reads&nbsp;USB&nbsp;product&nbsp;ID&nbsp;from&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;USB&nbsp;product&nbsp;ID.</tt></dd>
+</dl>
+<dl><dt><strong>usb_product_descriptor</strong></dt>
+<dd><tt>Reads&nbsp;USB&nbsp;product&nbsp;descriptor&nbsp;from&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;str:&nbsp;USB&nbsp;product&nbsp;descriptor&nbsp;string.</tt></dd>
+</dl>
+<dl><dt><strong>usb_remote_wake_up_attribute</strong></dt>
+<dd><tt>Reads&nbsp;'USB&nbsp;remote&nbsp;wake-up'&nbsp;attribute.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;value&nbsp;of&nbsp;'USB&nbsp;remote&nbsp;wake-up'&nbsp;attribute.</tt></dd>
+</dl>
+<dl><dt><strong>usb_self_powered_attribute</strong></dt>
+<dd><tt>Reads&nbsp;'USB&nbsp;self-powered'&nbsp;attribute.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool:&nbsp;value&nbsp;of&nbsp;'USB&nbsp;self-powered'&nbsp;attribute.</tt></dd>
+</dl>
+<dl><dt><strong>usb_serial_number_descriptor</strong></dt>
+<dd><tt>Reads&nbsp;USB&nbsp;serial&nbsp;number&nbsp;descriptor&nbsp;from&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;str:&nbsp;USB&nbsp;serial&nbsp;number&nbsp;descriptor&nbsp;string.</tt></dd>
+</dl>
+<dl><dt><strong>usb_vid</strong></dt>
+<dd><tt>Reads&nbsp;USB&nbsp;vendor&nbsp;ID&nbsp;from&nbsp;flash&nbsp;memory.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;USB&nbsp;vendor&nbsp;ID.</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-find_devices"><strong>find_devices</strong></a>(vendor_id: int = 1240, product_id: int = 221) -&gt; list</dt><dd><tt>Finds&nbsp;HID&nbsp;devices&nbsp;with&nbsp;given&nbsp;vendor&nbsp;and&nbsp;product&nbsp;IDs,<br>
+and&nbsp;returns&nbsp;a&nbsp;list&nbsp;of&nbsp;found&nbsp;descriptors.<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;vendor_id(int):&nbsp;the&nbsp;vendor&nbsp;ID&nbsp;to&nbsp;search&nbsp;for&nbsp;(default&nbsp;1240)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;product_id(int):&nbsp;the&nbsp;product&nbsp;ID&nbsp;to&nbsp;search&nbsp;for&nbsp;(default&nbsp;221)</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>__all__</strong> = ['MCP2221', 'find_devices']</td></tr></table>
+</body></html>
