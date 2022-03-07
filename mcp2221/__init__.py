@@ -649,7 +649,7 @@ class MCP2221():
         if mem == None: mem = self._mem_target
         if mem == MemoryType.SRAM:
             init = self.__and(self._read_sram(SramDataSubcode.ChipSettings)[1], 0b00000111)
-            self._write_sram(SramDataSubcode.ChipSettings, 0, value + 0x80 + init)
+            self._write_sram(SramDataSubcode.ChipSettings, 0, (value<<3) + 0x80 + init)
         elif mem == MemoryType.Flash:
             self._write_flash_byte(FlashDataSubcode.ChipSettings, 1, [3, 4], self.__byte_to_bits(value, 2))
     
@@ -922,7 +922,7 @@ class MCP2221():
         """
         if mem == None: mem = self._mem_target
         if mem == MemoryType.SRAM:
-            self._write_sram(SramDataSubcode.ChipSettings, 7, 0b10011000 if value else 0b10010000)
+            self._write_sram(SramDataSubcode.ChipSettings, 4, 0b10011000 if value else 0b10010000)
         elif mem == MemoryType.Flash:
             self._write_flash_byte(FlashDataSubcode.ChipSettings, 3, [6], [value])
     
@@ -951,7 +951,7 @@ class MCP2221():
         """
         if mem == None: mem = self._mem_target
         if mem == MemoryType.SRAM:
-            self._write_sram(SramDataSubcode.ChipSettings, 7, 0b10000110 if value else 0b10000100)
+            self._write_sram(SramDataSubcode.ChipSettings, 4, 0b10000110 if value else 0b10000100)
         elif mem == MemoryType.Flash:
             self._write_flash_byte(FlashDataSubcode.ChipSettings, 3, [5], [value])
     
@@ -970,12 +970,12 @@ class MCP2221():
     def clear_interrupt_flag(self) -> None:
         """Clears the interrupt flag.
         """
-        self._write_sram(SramDataSubcode.ChipSettings, 7, 0b10000001)
+        self._write_sram(SramDataSubcode.ChipSettings, 4, 0b10000001)
 
     #######################################
     # I2C configuration and data transfer #
     #######################################
-    def cancel_i2c_transfer(self) -> I2CCancelTransferResponse:
+    def i2c_cancel_transfer(self) -> I2CCancelTransferResponse:
         """Cancel pending I2C transfer.
 
         Returns:
@@ -984,7 +984,7 @@ class MCP2221():
         data = self._write(0x10, 0x00, 0x10)
         return I2CCancelTransferResponse(data[2])
     
-    def read_i2c_speed(self) -> I2CSpeed:
+    def i2c_read_speed(self) -> I2CSpeed:
         """Read configured I2C speed.
 
         Returns:
@@ -992,7 +992,7 @@ class MCP2221():
         """
         return I2CSpeed(self._write(0x10)[14])
 
-    def write_i2c_speed(self, speed: I2CSpeed) -> I2CSetSpeedResponse:
+    def i2c_write_speed(self, speed: I2CSpeed) -> I2CSetSpeedResponse:
         """Write I2C speed to flash memory.
 
         Parameters:
@@ -1004,8 +1004,66 @@ class MCP2221():
         data = self._write(0x10, 0x00, 0x00, 0x20, speed)
         return I2CSetSpeedResponse(data[3])
     
-    i2c_speed = property(read_i2c_speed, write_i2c_speed)
+    i2c_speed = property(i2c_read_speed, i2c_write_speed)
 
+    @property
+    def i2c_requested_transfer_length(self) -> int:
+        """Reads the number of bytes requested in the current I2C command.
+
+        Returns:
+            int: requested I2C transfer length.
+        """
+        data = self._write(0x10)[9:11]
+        return data[0] + (data[1] << 8)
+    
+    @property
+    def i2c_already_transferred_length(self) -> int:
+        """Reads the number of bytes that have already been transferred
+        in the current I2C command.
+
+        Returns:
+            int: amount of already transferred I2C bytes.
+        """
+        data = self._write(0x10)[11:13]
+        return data[0] + (data[1] << 8)
+    
+    @property
+    def i2c_internal_buffer_counter(self) -> int:
+        """Reads the value of the I2C internal buffer counter.
+
+        Returns:
+            int: value of internal I2C buffer counter.
+        """
+        return self._write(0x10)[13]
+    
+    @property
+    def i2c_slave_address(self) -> int:
+        """Reads the I2C slave address being used.
+
+        Returns:
+            int: I2C slave address being used.
+        """
+        data = self._write(0x10)[16:18]
+        return data[0] + (data[1] << 8)
+    
+    @property
+    def i2c_scl_state(self) -> bool:
+        """Reads the I2C clock (SCL) line state.
+
+        Returns:
+            bool: I2C clock line state.
+        """
+        return bool(self._write(0x10)[22])
+
+    @property
+    def i2c_sda_state(self) -> bool:
+        """Reads the I2C data (SDA) line state.
+
+        Returns:
+            bool: I2C data line state.
+        """
+        return bool(self._write(0x10)[23])
+    
     def i2c_has_pending_value(self) -> int:
         """Tells if I2C bus has pending data to be read.
 
