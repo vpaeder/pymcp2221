@@ -7,7 +7,7 @@ First and foremost, there are python packages for the same chip available [here]
 This code is currently in alpha stage. I'm writing unittests and will likely find remaining bugs. Some properties and methods may also change name.
 
 ##### Implemented features
-- Status/Set Parameters (0x10) - ok, except I2C line monitoring (bytes 9 to 23)
+- Status/Set Parameters (0x10) - ok
 - Read Flash Data (0xB0) - ok
 - Write Flash Data (0xB1) - ok
 - Send Flash Access Password (0xB2) - ok
@@ -22,7 +22,7 @@ This code is currently in alpha stage. I'm writing unittests and will likely fin
 - Get SRAM Settings (0x61) - ok, except GPIO directions/values through SRAM (duplicate with 0x51)
 - Reset Chip (0x70) - ok
 
-Every feature marked *ok* is implemented but not thoroughly tested at this point.
+Every feature marked *ok* is implemented, but some of them, like I2C, haven't been tested in real conditions.
 
 # Requirements
 - [hidapi](https://pypi.org/project/hidapi)
@@ -34,7 +34,7 @@ Every feature marked *ok* is implemented but not thoroughly tested at this point
 See *examples* folder.
 
 # API
-I'll format docs in a neat way at some point. In the meantime you can rely on python docstrings, which are rather complete already.
+I may format docs in a neat way at some point. In the meantime you can rely on python docstrings, which are rather complete already.
 
 Two ways to do that:
 1) from the command line, use pydoc:
