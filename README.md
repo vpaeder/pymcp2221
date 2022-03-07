@@ -43,14 +43,13 @@ The [tests](tests) folder contains unit tests for most of the aspects of this pa
     python -m unittest
 
 # API
-I may format docs in a neat way at some point. In the meantime you can rely on python docstrings, which are rather complete already.
+You can find docs in the [docs](docs) folder (generated from python docstrings). Alternatively, you can rely on python docstrings
 
-Two ways to do that:
-1) from the command line, use pydoc:
+1) either from the command line, use pydoc:
     ```bash
     pydoc mcp2221
     ```
-2) from within python:
+2) or from within python:
     ```python
     import mcp2221; help(mcp2221)
     ```
