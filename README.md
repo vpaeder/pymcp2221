@@ -26,16 +26,33 @@ Every feature marked *ok* is implemented, but some of them, like I2C, haven't be
 - [hidapi](https://pypi.org/project/hidapi)
 
 # Setup
-... not written yet ...
+From command line, use:
+    ```bash
+    python setup.py install
+    ```
+or for Linux/OSX:
+    ```bash
+    sudo python setup.py install
+    ```
 
 # Examples
 See *examples* folder.
+
+# Tests
+The *tests* folder contains unit tests for most of the aspects of this package. To run them, use:
+    ```bash
+    python -m unittest
+    ```
 
 # API
 I may format docs in a neat way at some point. In the meantime you can rely on python docstrings, which are rather complete already.
 
 Two ways to do that:
 1) from the command line, use pydoc:
-    ` $ pydoc mcp2221`
+    ```bash
+    pydoc mcp2221
+    ```
 2) from within python:
-    ` >>> import mcp2221; help(mcp2221)`
+    ```python
+    import mcp2221; help(mcp2221)
+    ```
