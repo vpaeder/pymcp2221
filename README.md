@@ -4,8 +4,6 @@ This is a python driver for the Microchip MCP2221/MCP2221A USB 2.0 to I2C/UART p
 
 First and foremost, there are python packages for the same chip available [here](https://github.com/nonNoise/PyMCP2221A) and [here](https://github.com/pilotak/python-mcp2221). If you use them and are satisfied, you probably won't find improvements in my package. If you're missing some features however, my code is meant to expose every chip feature described in the datasheet in a systematic manner, for python 3.3+.
 
-This code is currently in alpha stage. I'm writing unittests and will likely find remaining bugs. Some properties and methods may also change name.
-
 ##### Implemented features
 - Status/Set Parameters (0x10) - ok
 - Read Flash Data (0xB0) - ok
