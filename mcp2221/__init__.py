@@ -339,10 +339,11 @@ class MCP2221():
             byte(int): index of byte to write
             value(int): value to write
         """
-        gp_set = self._read_sram(SramDataSubcode.GPSettings)
+        # reads GPIO directions/values with command 0x51 and rearranges
+        gp_set = self._write(0x51)[2:10]
         cmd = bytearray(64)
         cmd[0] = 0x60
-        cmd[8:8+len(gp_set)] = gp_set
+        cmd[8:12] = [(gp_set[2*n] << 4) + (gp_set[2*n+1] << 3) for n in range(4)]
         if code == SramDataSubcode.ChipSettings:
             idx = 2 + byte
         elif code == SramDataSubcode.GPSettings:
@@ -1197,13 +1198,13 @@ class MCP2221():
         """
         self.__check_gpio_pin_index(gpio_num)
         if gpio_num == 0:
-            self.gpio0_write_function(GPIO0Function.GPIO)
+            self.gpio0_write_function(GPIO0Function.GPIO, MemoryType.Flash)
         elif gpio_num == 1:
-            self.gpio1_write_function(GPIO1Function.GPIO)
+            self.gpio1_write_function(GPIO1Function.GPIO, MemoryType.Flash)
         elif gpio_num == 2:
-            self.gpio2_write_function(GPIO2Function.GPIO)
+            self.gpio2_write_function(GPIO2Function.GPIO, MemoryType.Flash)
         elif gpio_num == 3:
-            self.gpio3_write_function(GPIO3Function.GPIO)
+            self.gpio3_write_function(GPIO3Function.GPIO, MemoryType.Flash)
         self._write_flash_byte(FlashDataSubcode.GPSettings, gpio_num, [3], [value])
 
     gpio0_powerup_direction = property(lambda s: s.gpio_read_powerup_direction(0), lambda s, v: s.gpio_write_powerup_direction(0, v))
@@ -1239,6 +1240,13 @@ class MCP2221():
         self.__check_gpio_pin_index(gpio_num)
         if mem == None: mem = self._mem_target
         if mem == MemoryType.SRAM:
+            # writing GPIO value/dir with 0x50 doesn't affect SRAM, so reading SRAM
+            # with 0x61 doesn't tell the real value of GPIO pins unless pins are
+            # assigned with 0x60; to avoid overwriting pin value/dir, we must get
+            # data with 0x51
+            init = self._write(0x51)[(2+2*gpio_num):(4+2*gpio_num)]
+            value = self.__and((init[0]<<4) + (init[1]<<3), 0b00011000)\
+                    + self.__and(value, 0b00000111)
             self._write_sram(SramDataSubcode.GPSettings, gpio_num, value)
         elif mem == MemoryType.Flash:
             self._write_flash_byte(FlashDataSubcode.GPSettings, gpio_num, [0, 1, 2], self.__byte_to_bits(value, 3))
