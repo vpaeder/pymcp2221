@@ -28,13 +28,13 @@ Every feature marked *ok* is implemented, but some of them, like I2C, haven't be
 # Setup
 From command line, use:
 
-    ```bash
+    ```
     python setup.py install
     ```
 
 or for Linux/OSX:
 
-    ```bash
+    ```
     sudo python setup.py install
     ```
 
@@ -44,7 +44,7 @@ See *examples* folder.
 # Tests
 The *tests* folder contains unit tests for most of the aspects of this package. To run them, use:
 
-    ```bash
+    ```
     python -m unittest
     ```
 
