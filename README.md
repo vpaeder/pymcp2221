@@ -28,11 +28,11 @@ Every feature marked *ok* is implemented, but some of them, like I2C, haven't be
 # Setup
 From command line, use:
 
-    `python setup.py install`
+    python setup.py install
 
 or for Linux/OSX:
 
-    `sudo python setup.py install`
+    sudo python setup.py install
 
 # Examples
 See [examples](examples) folder.
@@ -40,7 +40,7 @@ See [examples](examples) folder.
 # Tests
 The [tests](tests) folder contains unit tests for most of the aspects of this package. To run them, use:
 
-    `python -m unittest`
+    python -m unittest
 
 # API
 I may format docs in a neat way at some point. In the meantime you can rely on python docstrings, which are rather complete already.
