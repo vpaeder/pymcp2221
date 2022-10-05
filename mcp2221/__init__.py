@@ -14,6 +14,7 @@ protocol converters, together with helper functions and classes.
 
 __all__ = ['MCP2221', 'find_devices']
 
+import os
 import hid
 import warnings
 
@@ -220,6 +221,11 @@ class MCP2221():
         """
         if self._opened:
             cmd = self._build_command(*args)
+            if os.name == 'nt':
+                # Windows HID requires additional prefix byte ReportID=0x00
+                # https://stackoverflow.com/questions/22240591/confused-by-the-report-id-when-using-hidapi-through-usb
+                # https://www.microchip.com/forums/m887066.aspx
+                cmd.insert(0, 0x00)
             self.dev.write(cmd)
             self.dev.set_nonblocking(False)
             data = self._read_response(args[0])
