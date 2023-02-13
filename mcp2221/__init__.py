@@ -351,7 +351,7 @@ class MCP2221():
         cmd[0] = 0x60
         # set GPIO directions/values if these are relevant
         for n in range(4):
-            if gp_set[2*n] != 0xee:
+            if gp_set[2*n] <= 1:
                 cmd[8+n] = (gp_set[2*n] << 4) + (gp_set[2*n+1] << 3)
         
         if code == SramDataSubcode.ChipSettings:
@@ -1256,7 +1256,7 @@ class MCP2221():
             # assigned with 0x60; to avoid overwriting pin value/dir, we must get
             # data with 0x51
             init = self._write(0x51)[(2+2*gpio_num):(4+2*gpio_num)]
-            if init[0] != 0xee:
+            if init[0] <= 1:
                 value += (init[0]<<4) + (init[1]<<3)
             
             self._write_sram(SramDataSubcode.GPSettings, gpio_num, value)
