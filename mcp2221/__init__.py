@@ -349,12 +349,17 @@ class MCP2221():
         gp_set = self._write(0x51)[2:10]
         cmd = bytearray(64)
         cmd[0] = 0x60
-        cmd[8:12] = [(gp_set[2*n] << 4) + (gp_set[2*n+1] << 3) for n in range(4)]
+        # set GPIO directions/values if these are relevant
+        for n in range(4):
+            if gp_set[2*n] != 0xee:
+                cmd[8+n] = (gp_set[2*n] << 4) + (gp_set[2*n+1] << 3)
+        
         if code == SramDataSubcode.ChipSettings:
             idx = 2 + byte
         elif code == SramDataSubcode.GPSettings:
             idx = 8 + byte
             cmd[7] = 0x80
+        
         cmd[idx] = value
         self._write(*cmd)
 
@@ -1251,7 +1256,9 @@ class MCP2221():
             # assigned with 0x60; to avoid overwriting pin value/dir, we must get
             # data with 0x51
             init = self._write(0x51)[(2+2*gpio_num):(4+2*gpio_num)]
-            value += (init[0]<<4) + (init[1]<<3)
+            if init[0] != 0xee:
+                value += (init[0]<<4) + (init[1]<<3)
+            
             self._write_sram(SramDataSubcode.GPSettings, gpio_num, value)
         elif mem == MemoryType.Flash:
             self._write_flash_byte(FlashDataSubcode.GPSettings, gpio_num, [0, 1, 2], self.__byte_to_bits(value, 3))
