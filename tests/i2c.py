@@ -13,14 +13,14 @@ class TestI2C(MCPTestWithReadMock):
     def test_i2c_write_data_short_ok(self):
         for mode in I2CMode:
             self.mcp._read_response.return_value[0] = mode
-            self.mcp.i2c_write_data(0x7f, "blablabla", mode)
+            self.mcp.i2c_write_data(0x7f, b"blablabla", mode)
             self.assertEqual(self.mcp.dev.write.call_args[0][0][3], 0x7f << 1)
             self.assertEqual(self.mcp.dev.write.call_args[0][0][1], 9) # data length
 
     def test_i2c_write_data_long_ok(self):
         for mode in I2CMode:
             self.mcp._read_response.return_value[0] = mode
-            data = "a"*500
+            data = b"a"*500
             self.mcp.i2c_write_data(0x7f, data, mode)
             self.assertEqual(self.mcp.dev.write.call_args[0][0][3], 0x7f << 1)
             self.assertEqual(self.mcp.dev.write.call_args[0][0][1], 500 & 0xff)
