@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pymcp2221",
-    version="1.0.0",
+    version="1.0.5",
     author="Vincent Paeder",
     author_email="python@paeder.fi",
     description="Python driver for the Microchip MCP2221/MCP2221A USB 2.0 to I2C/UART protocol converters.",
