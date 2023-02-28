@@ -1100,7 +1100,7 @@ class MCP2221():
         if length > 0xffff:
             raise InvalidParameterException("Data string too long.")
 
-    def i2c_write_data(self, address:bytes, data:str, i2c_mode:I2CMode = I2CMode.Start) -> None:
+    def i2c_write_data(self, address:bytes, data:bytearray, i2c_mode:I2CMode = I2CMode.Start) -> None:
         """Writes data to given I2C address.
 
         Parameters:
@@ -1113,7 +1113,7 @@ class MCP2221():
         rem_bytes = dlen
         while rem_bytes>0:
             chunk_len = min(rem_bytes, 60)
-            chunk = data[dlen-rem_bytes:dlen-rem_bytes+chunk_len].encode("utf-8")
+            chunk = data[dlen-rem_bytes:dlen-rem_bytes+chunk_len]
             while True:
                 ret = self._write(i2c_mode, dlen & 0xff, dlen>>8, address<<1, *chunk)
                 if ret[1] == 0: break
