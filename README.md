@@ -1,10 +1,12 @@
 # pymcp2221
+
 This is a python driver for the Microchip MCP2221/MCP2221A USB 2.0 to I2C/UART protocol converters
 ([manufacturer's page](https://www.microchip.com/en-us/product/MCP2221A)).
 
 First and foremost, there are python packages for the same chip available [here](https://github.com/nonNoise/PyMCP2221A) and [here](https://github.com/pilotak/python-mcp2221). If you use them and are satisfied, you probably won't find improvements in my package. If you're missing some features however, my code is meant to expose every chip feature described in the datasheet in a systematic manner, for python 3.2+.
 
-##### Implemented features
+## Implemented features
+
 - Status/Set Parameters (0x10) - ok
 - Read Flash Data (0xB0) - ok
 - Write Flash Data (0xB1) - ok
@@ -22,34 +24,50 @@ First and foremost, there are python packages for the same chip available [here]
 
 Every feature marked *ok* is implemented, but some of them, like I2C, haven't been tested in real conditions.
 
-# Requirements
+## Requirements
+
 - [hidapi](https://pypi.org/project/hidapi)
 
-# Setup
+## Setup
+
 From command line, use:
 
-    python setup.py install
+```bash
+python setup.py install
+```
 
 or for Linux/OSX:
 
-    sudo python setup.py install
+```bash
+sudo python setup.py install
+```
 
-# Examples
+On Linux, to access your devices without root privileges, you need to set specific udev rules, as explained in [hidapi documentation](https://github.com/trezor/cython-hidapi#udev-rules).
+
+## Examples
+
 See [examples](examples) folder.
 
-# Tests
+## Tests
+
 The [tests](tests) folder contains unit tests for most of the aspects of this package. To run them, use:
 
-    python -m unittest
+```bash
+python -m unittest
+```
 
-# API
+## API
+
 You can find docs in the [docs](docs) folder (generated from python docstrings). Alternatively, you can rely on python docstrings
 
 1) either from the command line, use pydoc:
-    ```bash
-    pydoc mcp2221
-    ```
+
+```bash
+pydoc mcp2221
+```
+
 2) or from within python:
-    ```python
-    import mcp2221; help(mcp2221)
-    ```
+
+```python
+import mcp2221; help(mcp2221)
+```
