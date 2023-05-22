@@ -109,6 +109,9 @@ class MCP2221():
                                   Use find_devices to obtain one. (default None)
             password(str): 8 byte password to modify flash content (default "")
 
+        Raises:
+            IOException: if device was provided and device couldn't be opened.
+
         Note:
             If dev_descriptor is provided, device is opened automatically. If you
             don't want this to happen, provide no descriptor and use open() method
@@ -132,6 +135,9 @@ class MCP2221():
         
         Returns:
             bool: True if device could be opened, False otherwise.
+        
+        Raises:
+            IOException: if device couldn't be opened.
         """
         if self._opened == True: return False
         # create hidapi device instance
@@ -140,8 +146,10 @@ class MCP2221():
             self.dev.open_path(dev_descriptor["path"])
             self.dev.set_nonblocking(True)
             self._opened = True
-        except OSError:
+        except (OSError, IOError):
             self._opened = False
+            raise IOException("Can't open device. Check that the device descriptor exists and that you have access permissions.")
+
         return self._opened
     
     @property

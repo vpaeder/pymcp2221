@@ -12,7 +12,8 @@ class TestOpenClose(unittest.TestCase):
             self.assertTrue(self.mcp._opened)
 
     def test_open_fail(self):
-        self.mcp.open({"path":b""})
+        with self.assertRaises(IOException):
+            self.mcp.open({"path":b""})
         self.assertFalse(self.mcp._opened)
     
     def test_open_no_path(self):
