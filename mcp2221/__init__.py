@@ -1101,11 +1101,11 @@ class MCP2221():
         """
         return self._write(0x10)[25]
 
-    def _check_i2c_parameters(self, address:bytes, length:int):
+    def _check_i2c_parameters(self, address:int, length:int):
         """Internal command. Checks if given I2C parameters are valid.
 
         Parameters:
-            address(bytes): 7-bit I2C slave address
+            address(int): 7-bit I2C slave address
             length(int): data string length (max. 65535 characters)
         
         Raises:
@@ -1117,11 +1117,11 @@ class MCP2221():
         if length > 0xffff:
             raise InvalidParameterException("Data string too long.")
 
-    def i2c_write_data(self, address:bytes, data:bytearray, i2c_mode:I2CMode = I2CMode.Start) -> None:
+    def i2c_write_data(self, address:int, data:bytearray, i2c_mode:I2CMode = I2CMode.Start) -> None:
         """Writes data to given I2C address.
 
         Parameters:
-            address(bytes): 7-bit I2C slave address
+            address(int): 7-bit I2C slave address
             data(str): data string
             i2c_mode(I2CMode): enum code for I2C mode
         """
@@ -1136,11 +1136,11 @@ class MCP2221():
                 if ret[1] == 0: break
             rem_bytes -= chunk_len
 
-    def i2c_read_data(self, address:bytes, length:int, i2c_mode:I2CMode = I2CMode.Start) -> bytearray:
+    def i2c_read_data(self, address:int, length:int, i2c_mode:I2CMode = I2CMode.Start) -> bytearray:
         """Reads data from given I2C address.
 
         Parameters:
-            address(bytes): 7-bit I2C slave address
+            address(int): 7-bit I2C slave address
             length(int): amount of data to read
             i2c_mode(I2CMode): enum code for I2C mode
         
