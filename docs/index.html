@@ -261,10 +261,10 @@ Returns:<br>
 Returns:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;0&nbsp;for&nbsp;no,&nbsp;1&nbsp;for&nbsp;yes&nbsp;and&nbsp;2&nbsp;for&nbsp;irrelevant?.</tt></dd></dl>
 
-<dl><dt><a name="MCP2221-i2c_read_data"><strong>i2c_read_data</strong></a>(self, address: bytes, length: int, i2c_mode: mcp2221.enums.I2CMode = &lt;I2CMode.Start: 144&gt;) -&gt; bytearray</dt><dd><tt>Reads&nbsp;data&nbsp;from&nbsp;given&nbsp;I2C&nbsp;address.<br>
+<dl><dt><a name="MCP2221-i2c_read_data"><strong>i2c_read_data</strong></a>(self, address: int, length: int, i2c_mode: mcp2221.enums.I2CMode = &lt;I2CMode.Start: 144&gt;) -&gt; bytearray</dt><dd><tt>Reads&nbsp;data&nbsp;from&nbsp;given&nbsp;I2C&nbsp;address.<br>
 &nbsp;<br>
 Parameters:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;address(bytes):&nbsp;7-bit&nbsp;I2C&nbsp;slave&nbsp;address<br>
+&nbsp;&nbsp;&nbsp;&nbsp;address(int):&nbsp;7-bit&nbsp;I2C&nbsp;slave&nbsp;address<br>
 &nbsp;&nbsp;&nbsp;&nbsp;length(int):&nbsp;amount&nbsp;of&nbsp;data&nbsp;to&nbsp;read<br>
 &nbsp;&nbsp;&nbsp;&nbsp;i2c_mode(I2CMode):&nbsp;enum&nbsp;code&nbsp;for&nbsp;I2C&nbsp;mode<br>
 &nbsp;<br>
@@ -276,10 +276,10 @@ Returns:<br>
 Returns:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;I2CSpeed:&nbsp;enum&nbsp;code&nbsp;describing&nbsp;current&nbsp;I2C&nbsp;speed.</tt></dd></dl>
 
-<dl><dt><a name="MCP2221-i2c_write_data"><strong>i2c_write_data</strong></a>(self, address: bytes, data: str, i2c_mode: mcp2221.enums.I2CMode = &lt;I2CMode.Start: 144&gt;) -&gt; None</dt><dd><tt>Writes&nbsp;data&nbsp;to&nbsp;given&nbsp;I2C&nbsp;address.<br>
+<dl><dt><a name="MCP2221-i2c_write_data"><strong>i2c_write_data</strong></a>(self, address: int, data: str, i2c_mode: mcp2221.enums.I2CMode = &lt;I2CMode.Start: 144&gt;) -&gt; None</dt><dd><tt>Writes&nbsp;data&nbsp;to&nbsp;given&nbsp;I2C&nbsp;address.<br>
 &nbsp;<br>
 Parameters:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;address(bytes):&nbsp;7-bit&nbsp;I2C&nbsp;slave&nbsp;address<br>
+&nbsp;&nbsp;&nbsp;&nbsp;address(int):&nbsp;7-bit&nbsp;I2C&nbsp;slave&nbsp;address<br>
 &nbsp;&nbsp;&nbsp;&nbsp;data(str):&nbsp;data&nbsp;string<br>
 &nbsp;&nbsp;&nbsp;&nbsp;i2c_mode(I2CMode):&nbsp;enum&nbsp;code&nbsp;for&nbsp;I2C&nbsp;mode</tt></dd></dl>
 
