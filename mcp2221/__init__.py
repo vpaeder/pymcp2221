@@ -353,6 +353,7 @@ class MCP2221():
             byte(int): index of byte to write
             value(int): value to write
         """
+        gp_sram_set = self._read_sram(SramDataSubcode.GPSettings)
         # reads GPIO directions/values with command 0x51 and rearranges
         gp_set = self._write(0x51)[2:10]
         cmd = bytearray(64)
@@ -361,6 +362,8 @@ class MCP2221():
         for n in range(4):
             if gp_set[2*n] <= 1:
                 cmd[8+n] = (gp_set[2*n] << 4) + (gp_set[2*n+1] << 3)
+            else:
+                cmd[8+n] = gp_sram_set[n]
         
         if code == SramDataSubcode.ChipSettings:
             idx = 2 + byte
