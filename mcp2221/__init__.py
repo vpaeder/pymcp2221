@@ -1109,7 +1109,7 @@ class MCP2221():
         """Internal command. Checks if given I2C parameters are valid.
 
         Parameters:
-            address(bytes): 7-bit I2C slave address
+            address(int): 7-bit I2C slave address
             length(int): data string length (max. 65535 characters)
         
         Raises:
@@ -1125,7 +1125,7 @@ class MCP2221():
         """Writes data to given I2C address.
 
         Parameters:
-            address(bytes): 7-bit I2C slave address
+            address(int): 7-bit I2C slave address
             data(str): data string
             i2c_mode(I2CMode): enum code for I2C mode
         """
@@ -1144,7 +1144,7 @@ class MCP2221():
         """Reads data from given I2C address.
 
         Parameters:
-            address(bytes): 7-bit I2C slave address
+            address(int): 7-bit I2C slave address
             length(int): amount of data to read
             i2c_mode(I2CMode): enum code for I2C mode
         
