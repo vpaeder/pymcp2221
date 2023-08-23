@@ -19,7 +19,7 @@ class TestStatusSetParameters(MCPTestWithReadMock):
     def test_i2c_write_speed_ok(self):
         for v in I2CSetSpeedResponse:
             self.x10[3] = v
-            for w in range(27,256):
+            for w in range(0,256):
                 self.x10[14] = w
                 ret = self.mcp.i2c_write_speed(12000000//(w+3))
                 self.assertEqual(self.mcp.dev.write.call_args[0][0][3], 0x20)
@@ -33,10 +33,10 @@ class TestStatusSetParameters(MCPTestWithReadMock):
         with self.assertRaises(InvalidParameterException):
             self.mcp.i2c_write_speed(46332)
         with self.assertRaises(InvalidParameterException):
-            self.mcp.i2c_write_speed(400001)
+            self.mcp.i2c_write_speed(4000001)
     
     def test_i2c_read_speed(self):
-        for w in range(27,256):
+        for w in range(0,256):
             self.x10[14] = w
             self.assertEqual(self.mcp.i2c_read_speed(), 12000000//(w+3))
             self.assertEqual(self.mcp.i2c_speed, 12000000//(w+3))

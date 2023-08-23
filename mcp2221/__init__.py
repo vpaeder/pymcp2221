@@ -1035,8 +1035,8 @@ class MCP2221():
         """
         if speed<46333:
             raise InvalidParameterException("Speed too low (<46.33kHz)")
-        elif speed>400000:
-            raise InvalidParameterException("Speed too high (>400kHz)")
+        elif speed>4000000:
+            raise InvalidParameterException("Speed too high (>4MHz)")
         data = self._write(0x10, 0x00, 0x00, 0x20, 12000000 // speed - 3)
         return I2CSetSpeedResponse(data[3])
     
