@@ -40,7 +40,7 @@ class MCP2221():
     USB 2.0 to I2C/UART protocol converters
     
     Attributes:
-        i2c_speed(I2CSpeed): enum code for I2C transfer speed
+        i2c_speed(int): I2C transfer speed in Hz
         default_memory_target(MemoryType): default memory target
         cdc_sn_enumeration_enable_flag(bool): CDC serial number enumeration enable flag
         led_idle_uart_rx_level(bool): UART RX LED idle signal level
@@ -1013,24 +1013,28 @@ class MCP2221():
         data = self._write(0x10, 0x00, 0x10)
         return I2CCancelTransferResponse(data[2])
     
-    def i2c_read_speed(self) -> I2CSpeed:
+    def i2c_read_speed(self) -> int:
         """Read configured I2C speed.
 
         Returns:
             I2CSpeed: enum code describing current I2C speed.
         """
-        return I2CSpeed(self._write(0x10)[14])
+        return 12000000//(self._write(0x10)[14]+3)
 
-    def i2c_write_speed(self, speed: I2CSpeed) -> I2CSetSpeedResponse:
+    def i2c_write_speed(self, speed: int) -> I2CSetSpeedResponse:
         """Write I2C speed to flash memory.
 
         Parameters:
-            speed (I2CSpeed): enum code describing I2C speed
+            speed (int): I2C speed in Hz
         
         Returns:
             I2CSetSpeedResponse: response code returned by device.
         """
-        data = self._write(0x10, 0x00, 0x00, 0x20, speed)
+        if speed<46333:
+            raise InvalidParameterException("Speed too low (<46.33kHz)")
+        elif speed>400000:
+            raise InvalidParameterException("Speed too high (>400kHz)")
+        data = self._write(0x10, 0x00, 0x00, 0x20, 12000000 // speed - 3)
         return I2CSetSpeedResponse(data[3])
     
     i2c_speed = property(i2c_read_speed, i2c_write_speed)
@@ -1101,7 +1105,7 @@ class MCP2221():
         """
         return self._write(0x10)[25]
 
-    def _check_i2c_parameters(self, address:bytes, length:int):
+    def _check_i2c_parameters(self, address:int, length:int):
         """Internal command. Checks if given I2C parameters are valid.
 
         Parameters:
@@ -1117,7 +1121,7 @@ class MCP2221():
         if length > 0xffff:
             raise InvalidParameterException("Data string too long.")
 
-    def i2c_write_data(self, address:bytes, data:bytearray, i2c_mode:I2CMode = I2CMode.Start) -> None:
+    def i2c_write_data(self, address:int, data:bytearray, i2c_mode:I2CMode = I2CMode.Start) -> None:
         """Writes data to given I2C address.
 
         Parameters:
@@ -1136,7 +1140,7 @@ class MCP2221():
                 if ret[1] == 0: break
             rem_bytes -= chunk_len
 
-    def i2c_read_data(self, address:bytes, length:int, i2c_mode:I2CMode = I2CMode.Start) -> bytearray:
+    def i2c_read_data(self, address:int, length:int, i2c_mode:I2CMode = I2CMode.Start) -> bytearray:
         """Reads data from given I2C address.
 
         Parameters:

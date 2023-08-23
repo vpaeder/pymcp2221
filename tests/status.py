@@ -16,24 +16,30 @@ class TestStatusSetParameters(MCPTestWithReadMock):
             self.assertEqual(self.mcp.dev.write.call_args[0][0][2], 0x10)
             self.assertEqual(ret, v)
     
-    def test_i2c_write_speed(self):
+    def test_i2c_write_speed_ok(self):
         for v in I2CSetSpeedResponse:
             self.x10[3] = v
-            for w in I2CSpeed:
+            for w in range(27,256):
                 self.x10[14] = w
-                ret = self.mcp.i2c_write_speed(w)
+                ret = self.mcp.i2c_write_speed(12000000//(w+3))
                 self.assertEqual(self.mcp.dev.write.call_args[0][0][3], 0x20)
                 self.assertEqual(self.mcp.dev.write.call_args[0][0][4], w)
                 self.assertEqual(ret, v)
-                self.mcp.i2c_speed = w
+                self.mcp.i2c_speed = 12000000//(w+3)
                 self.assertEqual(self.mcp.dev.write.call_args[0][0][3], 0x20)
                 self.assertEqual(self.mcp.dev.write.call_args[0][0][4], w)
     
+    def test_i2c_write_speed_fail(self):
+        with self.assertRaises(InvalidParameterException):
+            self.mcp.i2c_write_speed(46332)
+        with self.assertRaises(InvalidParameterException):
+            self.mcp.i2c_write_speed(400001)
+    
     def test_i2c_read_speed(self):
-        for w in I2CSpeed:
+        for w in range(27,256):
             self.x10[14] = w
-            self.assertEqual(self.mcp.i2c_read_speed(), w)
-            self.assertEqual(self.mcp.i2c_speed, w)
+            self.assertEqual(self.mcp.i2c_read_speed(), 12000000//(w+3))
+            self.assertEqual(self.mcp.i2c_speed, 12000000//(w+3))
 
     def test_read_interrupt_flag(self):
         self.do_test_read_func_bool(self.mcp.read_interrupt_flag, 24)

@@ -1,27 +1,11 @@
 """Enums for MCP2221 driver."""
 
-__all__ = ["I2CSpeed", "ClockDutyCycle", "ReferenceVoltageValue", "GPIO0Function", "GPIO1Function",
+__all__ = ["ClockDutyCycle", "ReferenceVoltageValue", "GPIO0Function", "GPIO1Function",
            "GPIO2Function", "GPIO3Function", "I2CCancelTransferResponse", "I2CSetSpeedResponse",
            "FlashDataSubcode", "SramDataSubcode", "I2CMode", "GPIODirection",
            "SecurityOption", "MemoryType", "ClockFrequency", "ReferenceVoltageSource"]
 
 import enum
-
-class I2CSpeed(enum.IntEnum):
-    """I2C transfer speed. Values are appended to members
-    are data rates in bauds.
-    """
-    Bd_460800 = 0x00
-    Bd_230400 = 0x01
-    Bd_115200 = 0x02
-    Bd_57600 = 0x03
-    Bd_38400 = 0x04
-    Bd_19200 = 0x05
-    Bd_9600 = 0x06
-    Bd_4800 = 0x07
-    Bd_2400 = 0x08
-    Bd_1200 = 0x09
-    Bd_300 = 0x0a
 
 class ClockDutyCycle(enum.IntEnum):
     """Clock output duty cycle. This is the duty cycle

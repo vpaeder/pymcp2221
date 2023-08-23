@@ -3,4 +3,4 @@ __pycache__
 dist
 build
 .vscode
-
+pymcp2221.egg-info
