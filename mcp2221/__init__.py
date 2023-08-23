@@ -1017,7 +1017,7 @@ class MCP2221():
         """Read configured I2C speed.
 
         Returns:
-            I2CSpeed: enum code describing current I2C speed.
+            int: current I2C speed in Hz.
         """
         return 12000000//(self._write(0x10)[14]+3)
 
@@ -1029,6 +1029,9 @@ class MCP2221():
         
         Returns:
             I2CSetSpeedResponse: response code returned by device.
+        
+        Raises:
+            InvalidParameterException: if speed is out of range.
         """
         if speed<46333:
             raise InvalidParameterException("Speed too low (<46.33kHz)")
