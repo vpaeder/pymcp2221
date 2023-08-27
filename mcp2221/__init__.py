@@ -355,12 +355,16 @@ class MCP2221():
         """
         # reads GPIO directions/values with command 0x51 and rearranges
         gp_set = self._write(0x51)[2:10]
+        # read SRAM for alternate pin functions
+        gp_sram_set = self._read_sram(SramDataSubcode.GPSettings)
         cmd = bytearray(64)
         cmd[0] = 0x60
         # set GPIO directions/values if these are relevant
         for n in range(4):
             if gp_set[2*n] <= 1:
                 cmd[8+n] = (gp_set[2*n] << 4) + (gp_set[2*n+1] << 3)
+            else:
+                cmd[8+n] = gp_sram_set[n]
         
         if code == SramDataSubcode.ChipSettings:
             idx = 2 + byte
@@ -418,7 +422,7 @@ class MCP2221():
         for bit,value in zip(bits, values):
             cmd[byte] = self.__and(cmd[byte], self.__not(1<<bit))
             cmd[byte] = self.__or(cmd[byte], 1<<bit if value else 0)
-        if byte == 0:
+        if code == FlashDataSubcode.ChipSettings:
             cmd += self._password.encode("utf-8")
         self._write(0xb1, code, *cmd)
     
@@ -1275,6 +1279,9 @@ class MCP2221():
         self.__check_gpio_pin_index(gpio_num)
         if mem == None: mem = self._mem_target
         if mem == MemoryType.SRAM:
+            # we need to read SRAM for voltage reference settings, as they seem
+            # to be erased when any GPIO function is changed
+            vref_data = self._write(0x61)[6:8]
             # writing GPIO value/dir with 0x50 doesn't affect SRAM, so reading SRAM
             # with 0x61 doesn't tell the real value of GPIO pins unless pins are
             # assigned with 0x60; to avoid overwriting pin value/dir, we must get
@@ -1284,6 +1291,10 @@ class MCP2221():
                 value += (init[0]<<4) + (init[1]<<3)
             
             self._write_sram(SramDataSubcode.GPSettings, gpio_num, value)
+            # rewrite voltage reference settings
+            dac_vref = 0x80 | (vref_data[0] >> 5)
+            adc_vref = 0x80 | ((vref_data[1] >> 2) & 0x07)
+            self._write(0x60, 0, 0, dac_vref, 0, adc_vref)
         elif mem == MemoryType.Flash:
             self._write_flash_byte(FlashDataSubcode.GPSettings, gpio_num, [0, 1, 2], self.__byte_to_bits(value, 3))
 
@@ -1630,11 +1641,11 @@ class MCP2221():
     firmware_version = property(read_firmware_version)
 
     def reset_chip(self) -> None:
-        """Resets chip.
+        """Resets chip. After this, a new instance must be created,
+        as the device descriptor will have changed.
         """
         try:
             # this should throw an OSError as chip disconnects
             self._write(0x70, 0xab, 0xcd, 0xef)
         except OSError:
             self.close()
-            self.open()

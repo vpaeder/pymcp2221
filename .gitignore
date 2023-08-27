@@ -2,5 +2,6 @@ __pycache__
 .DS_Store
 dist
 build
+scripts
 .vscode
 pymcp2221.egg-info
