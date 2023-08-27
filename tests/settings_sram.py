@@ -133,11 +133,12 @@ class TestGPIOFunctionSRAM(MCPTestWithReadMock):
         for pin in range(4):
             value = getattr(mcp2221.enums, "GPIO{:d}Function".format(pin))(2)
             getattr(self.mcp, "gpio{:d}_write_function".format(pin))(value)
-            self.assertEqual(self.mcp.dev.write.call_args[0][0][7], 0b10000000)
-            self.assertEqual(self.mcp.dev.write.call_args[0][0][8+pin], 0b00000010)
+            pin_args = self.mcp.dev.write.call_args_list[-2][0][0]
+            self.assertEqual(pin_args[7], 0b10000000)
+            self.assertEqual(pin_args[8+pin], 0b00000010)
             setattr(self.mcp, "gpio{:d}_function".format(pin), value)
-            self.assertEqual(self.mcp.dev.write.call_args[0][0][7], 0b10000000)
-            self.assertEqual(self.mcp.dev.write.call_args[0][0][8+pin], 0b00000010)
+            self.assertEqual(pin_args[7], 0b10000000)
+            self.assertEqual(pin_args[8+pin], 0b00000010)
     
     def test_read_gpio_function(self):
         for pin in range(4):
