@@ -153,15 +153,15 @@ class MCP2221():
         # in some configurations of pin functions
         pin_data = self._read_sram(SramDataSubcode.GPSettings)
         tmp_pin_data = [pin_data[0], 0x0, 0x0, 0x0]
-        for pin_id in zip([1,2,3], pin_data[1:]):
+        for n in [1,2,3]:
             # pin state must be treated differently when in input or output mode
-            pin_function = pin_id[1] & 0x03
-            if pin_function == 0 and pin_id[1] & 0x08: # GPIO input
-                tmp_pin_data[pin_id[0]] |= 0x02 # set to ADC
+            pin_function = pin_data[n] & 0x03
+            if pin_function == 0 and pin_data[n] & 0x08: # GPIO input
+                tmp_pin_data[n] |= 0x02 # set to ADC
             elif pin_function == 2: # ADC
-                tmp_pin_data[pin_id[0]] |= 0x08 # set to GPIO input
+                tmp_pin_data[n] |= 0x08 # set to GPIO input
             else:
-                tmp_pin_data[pin_id[0]] = pin_data[pin_id[0]] # no change
+                tmp_pin_data[n] = pin_data[n] # no change
         # apply temporary state, then original state
         self._write(0x60, 0, 0, 0, 0, 0, 0, 0x80, *tmp_pin_data)
         self._write(0x60, 0, 0, 0, 0, 0, 0, 0x80, *pin_data)
