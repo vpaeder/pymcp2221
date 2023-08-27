@@ -8,7 +8,10 @@ class TestOpenClose(unittest.TestCase):
 
     def test_open_ok(self):
         with patch("hid.device"):
-            self.mcp.open({"path":b""})
+            with self.assertRaises(FailedCommandException):
+                # since there's no real device connected, the ADC state fix
+                # won't work => return empty response
+                self.mcp.open({"path":b""})
             self.assertTrue(self.mcp._opened)
 
     def test_open_fail(self):
