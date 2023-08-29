@@ -485,7 +485,8 @@ Returns:<br>
 Returns:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;USB&nbsp;vendor&nbsp;ID.</span></dd></dl>
 
-<dl><dt><a name="MCP2221-reset_chip"><strong>reset_chip</strong></a>(self) -&gt; None</dt><dd><span class="code">Resets&nbsp;chip.</span></dd></dl>
+<dl><dt><a name="MCP2221-reset_chip"><strong>reset_chip</strong></a>(self) -&gt; None</dt><dd><span class="code">Resets&nbsp;chip.&nbsp;After&nbsp;this,&nbsp;a&nbsp;new&nbsp;instance&nbsp;must&nbsp;be&nbsp;created,<br>
+as&nbsp;the&nbsp;device&nbsp;descriptor&nbsp;will&nbsp;have&nbsp;changed.</span></dd></dl>
 
 <dl><dt><a name="MCP2221-set_default_memory_target"><strong>set_default_memory_target</strong></a>(self, mem: mcp2221.enums.MemoryType) -&gt; None</dt><dd><span class="code">Sets&nbsp;default&nbsp;memory&nbsp;target.<br>
 &nbsp;<br>

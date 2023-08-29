@@ -368,7 +368,6 @@ class MCP2221():
             byte(int): index of byte to write
             value(int): value to write
         """
-        gp_sram_set = self._read_sram(SramDataSubcode.GPSettings)
         # reads GPIO directions/values with command 0x51 and rearranges
         gp_set = self._write(0x51)[2:10]
         # read SRAM for alternate pin functions
