@@ -815,8 +815,33 @@ class MCP2221():
                             raise InvalidParameterException("Invalid descriptor code.")
         if len(value)>30:
             raise InvalidParameterException("Descriptor too long.")
+        if len(value)<30:
+            value += "\0"
         bval = value.encode("utf-16")
         self._write(0xb1, code, len(bval), 0x03, *bval)
+
+    def _read_usb_descriptor(self, code: FlashDataSubcode) -> str:
+        """Internal command. Reads USB descriptor from flash memory.
+
+        Parameters:
+            code(FlashDataSubcode): enum code for USB descriptor register
+        
+        Returns:
+            str: requested USB descriptor
+        
+        Raises:
+            InvalidParameterException: if code is not for a USB descriptor
+
+        """
+        if code not in [FlashDataSubcode.USBManufacturerDescriptorString,
+                        FlashDataSubcode.USBProductDescriptorString,
+                        FlashDataSubcode.USBSerialNumberDescriptorString]:
+                            raise InvalidParameterException("Invalid descriptor code.")
+        data = self._read_flash(code)
+        if (len(data)<60):
+            return bytes(data[:-2]).decode('utf-16')
+        else:
+            return bytes(data).decode('utf-16')
 
     def read_usb_manufacturer_descriptor(self) -> str:
         """Reads USB manufacturer descriptor from flash memory.
@@ -824,11 +849,7 @@ class MCP2221():
         Returns:
             str: USB manufacturer descriptor string.
         """
-        data = self._read_flash(FlashDataSubcode.USBManufacturerDescriptorString)
-        if (len(data)<60):
-            return bytes(data[:-2]).decode('utf-16')
-        else:
-            return bytes(data).decode('utf-16')
+        return self._read_usb_descriptor(FlashDataSubcode.USBManufacturerDescriptorString)
     
     def write_usb_manufacturer_descriptor(self, value:str) -> None:
         """Writes USB manufacturer descriptor to flash memory.
@@ -846,11 +867,7 @@ class MCP2221():
         Returns:
             str: USB product descriptor string.
         """
-        data = self._read_flash(FlashDataSubcode.USBProductDescriptorString)
-        if (len(data)<60):
-            return bytes(data[:-2]).decode('utf-16')
-        else:
-            return bytes(data).decode('utf-16')
+        return self._read_usb_descriptor(FlashDataSubcode.USBProductDescriptorString)
 
     def write_usb_product_descriptor(self, value:str) -> None:
         """Writes USB product descriptor to flash memory.
@@ -868,11 +885,7 @@ class MCP2221():
         Returns:
             str: USB serial number descriptor string.
         """
-        data = self._read_flash(FlashDataSubcode.USBSerialNumberDescriptorString)
-        if (len(data)<60):
-            return bytes(data[:-2]).decode('utf-16')
-        else:
-            return bytes(data).decode('utf-16')
+        return self._read_usb_descriptor(FlashDataSubcode.USBSerialNumberDescriptorString)
 
     def write_usb_serial_number_descriptor(self, value:str) -> None:
         """Writes USB serial number descriptor to flash memory.
