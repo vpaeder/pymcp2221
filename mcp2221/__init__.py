@@ -154,7 +154,9 @@ class MCP2221():
         pin_data = self._read_sram(SramDataSubcode.GPSettings)
         # get pin values from 0x51 as SRAM may not reflect the right ones
         pin_values = self._write(0x51)
-        pin_data = [v | (w<<4) for (v,w) in zip(pin_data, pin_values[2:9:2])]
+        # merge pin values and directions with data from SRAM
+        pin_data = [(v & 0xef) | (w<<4) for (v,w) in zip(pin_data, pin_values[2:9:2])]
+        pin_data = [(v & 0xf7) | (w<<3) for (v,w) in zip(pin_data, pin_values[3:10:2])]
         tmp_pin_data = [pin_data[0], 0x0, 0x0, 0x0]
         for n in [1,2,3]:
             # pin state must be treated differently when in input or output mode
@@ -170,10 +172,10 @@ class MCP2221():
         self._write(0x60, 0, 0, 0, 0, 0, 0, 0x80, *pin_data)
         # apply pin values
         self._write(0x50, 0x00,
-                    0x01, pin_values[2], 0x00, 0x00,
-                    0x01, pin_values[4], 0x00, 0x00,
-                    0x01, pin_values[6], 0x00, 0x00,
-                    0x01, pin_values[8])
+                    0x01, pin_values[2], 0x01, pin_values[3],
+                    0x01, pin_values[4], 0x01, pin_values[5],
+                    0x01, pin_values[6], 0x01, pin_values[7],
+                    0x01, pin_values[8], 0x01, pin_values[9])
         return self._opened
     
     @property
