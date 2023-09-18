@@ -151,7 +151,9 @@ class MCP2221():
             raise IOException("Can't open device. Check that the device descriptor exists and that you have access permissions.")
         # need to fix ADC state, which can return undefined values
         # in some configurations of pin functions
-        pin_data = self._read_flash(FlashDataSubcode.GPSettings)
+        pin_data = self._read_sram(SramDataSubcode.GPSettings)
+        pin_values = self._write(0x51)
+        pin_data = [v | (w<<4) for (v,w) in zip(pin_data, pin_values[2:9:2])]
         tmp_pin_data = [pin_data[0], 0x0, 0x0, 0x0]
         for n in [1,2,3]:
             # pin state must be treated differently when in input or output mode
