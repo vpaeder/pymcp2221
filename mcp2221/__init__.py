@@ -169,7 +169,6 @@ class MCP2221():
         self._write(0x60, 0, 0, 0, 0, 0, 0, 0x80, *tmp_pin_data)
         self._write(0x60, 0, 0, 0, 0, 0, 0, 0x80, *pin_data)
         # apply pin values
-        pin_values[1:8:2] = [1,1,1,1]
         self._write(0x50, 0x00,
                     0x01, pin_values[2], 0x00, 0x00,
                     0x01, pin_values[4], 0x00, 0x00,
