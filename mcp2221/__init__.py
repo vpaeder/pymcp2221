@@ -152,6 +152,7 @@ class MCP2221():
         # need to fix ADC state, which can return undefined values
         # in some configurations of pin functions
         pin_data = self._read_sram(SramDataSubcode.GPSettings)
+        # get pin values from 0x51 as SRAM may not reflect the right ones
         pin_values = self._write(0x51)
         pin_data = [v | (w<<4) for (v,w) in zip(pin_data, pin_values[2:9:2])]
         tmp_pin_data = [pin_data[0], 0x0, 0x0, 0x0]
@@ -167,6 +168,13 @@ class MCP2221():
         # apply temporary state, then original state
         self._write(0x60, 0, 0, 0, 0, 0, 0, 0x80, *tmp_pin_data)
         self._write(0x60, 0, 0, 0, 0, 0, 0, 0x80, *pin_data)
+        # apply pin values
+        pin_values[1:8:2] = [1,1,1,1]
+        self._write(0x50, 0x00,
+                    0x01, pin_values[2], 0x00, 0x00,
+                    0x01, pin_values[4], 0x00, 0x00,
+                    0x01, pin_values[6], 0x00, 0x00,
+                    0x01, pin_values[8])
         return self._opened
     
     @property
